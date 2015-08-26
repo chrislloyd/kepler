@@ -6,7 +6,7 @@
    [clojure.core.async :as async]
    [schema.core :as s]))
 
-; Debug
+;; Debug System
 
 (defn debug-system
   "Simply prints out the current state"
@@ -43,6 +43,8 @@
       (update :components #(reduce dispatch-event % events))
       (assoc :events [])))
 
+
+;; Broadcast system
 
 (defn- entity-tick-payload [game entity]
   ["tick", entity])
