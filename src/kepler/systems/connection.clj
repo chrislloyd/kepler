@@ -1,11 +1,12 @@
 (ns kepler.systems.connection
   (:require [kepler.component :refer [add-component remove-component]]
-            [kepler.components :refer [Uplink Life]]))
+            [kepler.components :refer [Uplink Life Pos]]))
 
 (defn- add-bot [state {:keys [entity chan]}]
   (-> state
       (add-component entity (Uplink chan))
-      (add-component entity (Life 100.0))))
+      (add-component entity (Life 100))
+      (add-component entity (Pos 0 0))))
 
 (defn- remove-bot [state {:keys [entity]}]
   (-> state

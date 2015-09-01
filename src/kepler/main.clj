@@ -10,7 +10,7 @@
 (defn make-system [latch]
   (ylet [engine (with-engine game-system)
          :let [dispatcher (partial dispatch-action engine)]
-         clock  (with-clock {:period 30
+         clock  (with-clock {:period 300
                              :dispatcher dispatcher})
          wss (with-wss {:port 5000
                         :dispatcher dispatcher})]

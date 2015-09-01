@@ -2,7 +2,8 @@
   (:require [kepler.systems.connection :refer [connection-system]]
             [kepler.systems.deathly-sweeper :refer [deathly-sweeper-system]]
             [kepler.systems.cosmic-rays :refer [cosmic-rays-system]]
-            [kepler.systems.downlink :refer [downlink-system]]))
+            [kepler.systems.downlink :refer [downlink-system]]
+            [kepler.systems.locomotion :refer [locomotion-system]]))
 
 (def DefaultState '())
 
@@ -14,8 +15,17 @@
 (defn game-system [state action]
   (-> (or state DefaultState)
       (connection-system action)
+
+      ;; actions
+      (locomotion-system action)
+
+      ;; environment
       (cosmic-rays-system action)
+
+      ;; death
       (deathly-sweeper-system action)
+
+      ;; comms
       (downlink-system action)
       (debug-system action)))
 

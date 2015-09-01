@@ -3,52 +3,40 @@
 
 (def MaxMsgSize 140)
 
-(def RestCommand
-  {:cmd (s/eq "rest")})
-
 (def MoveCommand
-  {:cmd (s/eq "move")
-   :dir (s/enum "←" "↓" "↑" "→")})
+  [(s/one (s/eq "MOVE") "type") (s/one (s/enum "←" "↓" "↑" "→") "dir")])
 
-(def TurnCommand
-  {:cmd (s/eq "turn")
-   :deg s/Int})
+;; (def TurnCommand
+;;   {:cmd (s/eq "turn")
+;;    :deg s/Int})
 
-(def SayCommand
-  {:cmd (s/eq "say")
-   :msg (s/both s/Str (s/pred #(<= (count %) MaxMsgSize)))})
+;; (def SayCommand
+;;   {:cmd (s/eq "say")
+;;    :msg (s/both s/Str (s/pred #(<= (count %) MaxMsgSize)))})
 
-(def TakeCommand
-  {:cmd (s/eq "take")})
+;; (def TakeCommand
+;;   {:cmd (s/eq "take")})
 
-(def DropCommand
-  {:cmd (s/eq "drop")
-   :item s/Int})
+;; (def DropCommand
+;;   {:cmd (s/eq "drop")
+;;    :item s/Int})
 
-(def ExoCommand
-  {:cmd (s/eq "exo")
-   :item s/Int})
+;; (def ExoCommand
+;;   {:cmd (s/eq "exo")
+;;    :item s/Int})
 
-(def UseCommand
-  {:cmd (s/eq "use")
-   :item s/Int})
+;; (def UseCommand
+;;   {:cmd (s/eq "use")
+;;    :item s/Int})
 
-(def FabCommand
-  {:cmd (s/eq "fab")
-   :schema s/Str})
+;; (def FabCommand
+;;   {:cmd (s/eq "fab")
+;;    :schema s/Str})
 
 (s/defschema Command
   "A schema for commands that players can send to their bots"
   (s/conditional
-   #(= (:cmd %) "rest") RestCommand
-   #(= (:cmd %) "move") MoveCommand
-   #(= (:cmd %) "turn") TurnCommand
-   #(= (:cmd %) "say")  SayCommand
-   #(= (:cmd %) "take") TakeCommand
-   #(= (:cmd %) "drop") DropCommand
-   #(= (:cmd %) "exo")  ExoCommand
-   #(= (:cmd %) "use")  UseCommand
-   #(= (:cmd %) "fab")  FabCommand))
+   #(= (first %) "MOVE") MoveCommand))
 
 (defn check-command
   "Checks an command"

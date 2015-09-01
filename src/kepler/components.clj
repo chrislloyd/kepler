@@ -14,6 +14,23 @@
 (defn Uplink [chan]
   (new-component :uplink chan))
 
+
+(defn Pos [x y]
+  (new-component :pos {:x x :y y}))
+
+(defn pos-move-up [{:keys [x y]}]
+  {:x x :y (+ y 1)})
+
+(defn pos-move-down [{:keys [x y]}]
+  {:x x :y (- y 1)})
+
+(defn pos-move-left [{:keys [x y]}]
+  {:x (- x 1) :y y})
+
+(defn pos-move-right [{:keys [x y]}]
+  {:x (+ x 1) :y y})
+
+
 ; TODO Direction component
 ; {:direction 0-360}
 

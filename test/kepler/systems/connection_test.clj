@@ -9,7 +9,7 @@
   (testing "add bot action"
     (is (=
          (connection-system '() add-bot-action)
-         '([1 :life 100] [1 :uplink "chan"]))))
+         '([1 :pos {:x 0 :y 0}] [1 :life 100] [1 :uplink "chan"]))))
 
   (testing "remove bot action"
     (is (= (connection-system '([1 :life 100] [1 :uplink "chan"])
