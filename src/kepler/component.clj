@@ -1,36 +1,28 @@
-(ns kepler.component
-  (:require [kepler.ecs :as ecs]))
+(ns kepler.component)
 
-(defn health-component
-  [initial-health]
-  (ecs/build-component :health initial-health))
+(defrecord Component [tag
+                      data])
 
-(defn position-component
-  [x y]
-  (ecs/build-component :position {:x x
-                                  :y y}))
-(defn colorable-component
-  [color]
-  (ecs/build-component
-    :color color))
+(defn new-component
+  [tag data]
+  (Component. tag data))
 
-(defn chan-component [chan]
-  (ecs/build-component :chan chan))
+(defn add-component
+  "Adds a component to the list of components"
+  [state entity {:keys [tag data]}]
+  (conj state [entity tag data]))
 
-; TODO Direction component
-; {:direction 0-360}
+(defn remove-component
+  "Removes any instances of a component from the list of components"
+  [state entity tag]
+  (filter
+   (fn [[e t]]
+     (not (and (= e entity) (= t tag))))
+   state))
 
-; TODO Action cache component
-; {:action ["MOVE" 1]}
-
-; TODO Health component
-; {:health 100}
-
-; TODO Battery component (max hardcoded)
-; {:energy 100000}
-
-; TODO Comms component
-; {:comms-inbox ["HELLO WORLD"]}
-
-; TODO Inventory component
-; {:inventory #{} (set of entity ids with max of N items)
+(defn update-component
+  "Updates a component record in place. Useful for setting component values."
+  [state entity tag new-component]
+  (-> state
+      (remove-component entity tag)
+      (add-component entity new-component)))
