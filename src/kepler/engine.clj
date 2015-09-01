@@ -1,36 +1,38 @@
 (ns kepler.engine
-  (:require [clojure.core.async :refer [<!!] :as async]))
+  (:require [clojure.core.async :refer [>!! <! chan close! go-loop]]))
 
-(def TICK_PERIOD 3000)
+(defrecord Engine [system
+                   state
+                   ch])
 
-; (defn new-game
-;   [systems components]
-;   {:running true :systems systems :components components})
+(defn new-engine
+  "Creates a new engine object"
+  [system]
+  (Engine. system nil (chan)))
 
-(defn- tick
-  "Applies the game's systems to it's current state"
-  [game]
-  (reduce #(%2 %1) game (:systems game)))
+(defn- dispatch [engine action]
+  (assoc engine :state
+         ((:system engine) (:state engine) action)))
 
-(defn- collect-values-from-chan-for-period
-  "Takes all the values from a channel within a certain period. Returns a
-  vector of results. Blocks for period."
-  [ch period]
-  (let [t (async/timeout period)]
-    (async/go-loop [col []]
-      (async/alt!
-        t ([]
-           col)
-        ch ([v]
-            (when v
-              (recur (conj col v))))))))
+(defn start-engine
+  "Starts an engine in a separate thread. Listens to the engine's dispatch channel and dispatches any incoming actions."
+  [engine]
+  (go-loop [engine engine]
+    (when-let [action (<! (:ch engine))]
+      (recur (dispatch engine action)))))
 
+(defn stop-engine
+  "Stops a running engine."
+  [engine]
+  (close! (:ch engine)))
 
-(defn go-run [ch state]
-  (async/go-loop [state state t 0]
-    (when-let [events (<!!
-                       (collect-values-from-chan-for-period ch TICK_PERIOD))]
-      (let [new-state (tick (assoc state :events events))]
-        (if (:running? new-state)
-          (recur new-state (inc t))
-          new-state)))))
+(defn dispatch-action [engine action]
+  (>!! (:ch engine) action))
+
+(defn with-engine [opts f]
+  (let [engine (new-engine opts)]
+    (start-engine engine)
+    (try
+      (f engine)
+      (finally
+        (stop-engine engine)))))
