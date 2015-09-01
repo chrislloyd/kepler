@@ -17,5 +17,5 @@
         (latch)))
 
 (defn -main [& args]
-  (set-system-fn! 'make-system)
+  (set-system-fn! 'kepler.main/make-system)
   (start!))
