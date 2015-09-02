@@ -1,5 +1,5 @@
 (ns kepler.systems.deathly-sweeper-test
-  (:require [clojure.core.async :refer [<!! close! chan go]]
+  (:require [clojure.core.async :refer [<!! chan]]
             [clojure.test :refer :all]
             [kepler.systems.deathly-sweeper :refer :all]))
 

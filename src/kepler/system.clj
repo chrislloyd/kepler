@@ -1,7 +1,7 @@
 (ns kepler.system
   (:require [kepler.systems.connection :refer [connection-system]]
-            [kepler.systems.deathly-sweeper :refer [deathly-sweeper-system]]
             [kepler.systems.cosmic-rays :refer [cosmic-rays-system]]
+            [kepler.systems.deathly-sweeper :refer [deathly-sweeper-system]]
             [kepler.systems.downlink :refer [downlink-system]]
             [kepler.systems.locomotion :refer [locomotion-system]]))
 

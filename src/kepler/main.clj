@@ -1,19 +1,21 @@
 (ns kepler.main
   (:gen-class)
-  (:require [kepler.engine :refer [with-engine dispatch-action]]
-            [kepler.clock :refer [with-clock]]
-            [kepler.wss :refer [with-wss]]
+  (:require [kepler.clock :refer [with-clock]]
+            [kepler.engine :refer [with-engine dispatch-action]]
             [kepler.system :refer [game-system]]
-            [yoyo :refer [ylet set-system-fn! start!]]
-            [clojure.core.async :refer [chan close!]]))
+            [kepler.wss :refer [new-ws-handler]]
+            [yoyo.http-kit :refer [with-server]]
+            [yoyo :refer [ylet set-system-fn! start!]]))
 
-(defn make-system [latch]
+(defn- make-system [latch]
   (ylet [engine (with-engine game-system)
-         :let [dispatcher (partial dispatch-action engine)]
+         :let [dispatcher (partial dispatch-action engine)
+               ws-handler (new-ws-handler {:dispatcher dispatcher
+                                           :format :json})]
          clock  (with-clock {:period 300
                              :dispatcher dispatcher})
-         wss (with-wss {:port 5000
-                        :dispatcher dispatcher})]
+         wss (with-server {:handler ws-handler
+                           :server-opts {:port 5000}})]
         (latch)))
 
 (defn -main [& args]

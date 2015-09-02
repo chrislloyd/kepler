@@ -1,9 +1,8 @@
 (ns kepler.wss
-  (:require [kepler.entity :refer [new-entity]]
+  (:require [chord.http-kit :refer [wrap-websocket-handler]]
+            [clojure.core.async :refer [>!! alt! close! chan go]]
             [kepler.command :refer [check-command]]
-            [yoyo.http-kit :refer [with-webserver]]
-            [chord.http-kit :refer [wrap-websocket-handler]]
-            [clojure.core.async :refer [>!! alt! close! chan go]]))
+            [kepler.entity :refer [new-entity]]))
 
 (defn- add-bot-action [entity chan]
   {:type :add-bot
@@ -47,6 +46,3 @@
 (defn new-ws-handler [{:keys [dispatcher] :as opts}]
   (wrap-websocket-handler (partial handler dispatcher) opts))
 
-(defn with-wss [{:keys [port] :as opts} f]
-  (let [ws-handler (new-ws-handler (merge {:format :json} opts))]
-    (with-webserver {:port port :handler ws-handler} f)))
