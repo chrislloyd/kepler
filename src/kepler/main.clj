@@ -1,11 +1,12 @@
 (ns kepler.main
   (:gen-class)
-  (:require [kepler.clock :refer [with-clock]]
-            [kepler.engine :refer [with-engine dispatch-action]]
-            [kepler.system :refer [game-system]]
-            [kepler.wss :refer [new-ws-handler]]
-            [yoyo.http-kit :refer [with-server]]
-            [yoyo :refer [ylet set-system-fn! start!]]))
+  (:require [kepler
+             [clock :refer [with-clock]]
+             [engine :refer [dispatch-action with-engine]]
+             [ws-handler :refer [new-ws-handler]]]
+            [kepler.systems.game :refer [game-system]]
+            [yoyo :refer [set-system-fn! start! ylet]]
+            [yoyo.http-kit :refer [with-server]]))
 
 (defn- make-system [latch]
   (ylet [engine (with-engine game-system)

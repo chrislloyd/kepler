@@ -1,4 +1,4 @@
-(ns kepler.wss
+(ns kepler.ws-handler
   (:require [chord.http-kit :refer [wrap-websocket-handler]]
             [clojure.core.async :refer [>!! alt! close! chan go]]
             [kepler.command :refer [check-command]]

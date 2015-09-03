@@ -7,11 +7,10 @@
 
 (deftest connection-system-test
   (testing "add bot action"
-    (is (=
-         (connection-system '() add-bot-action)
-         '([1 :pos {:x 0 :y 0}] [1 :life 100] [1 :uplink "chan"]))))
+    (is (not (empty? (connection-system [] add-bot-action)))))
 
   (testing "remove bot action"
-    (is (= (connection-system '([1 :life 100] [1 :uplink "chan"])
+    (is (= (connection-system [{:entity 1 :type :life :val 100}
+                               {:entity 1 :type :uplink :val "chan"}]
                               remove-bot-action)
-           '([1 :life 100])))))
+           [{:entity 1 :type :life :val 100}]))))

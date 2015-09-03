@@ -2,27 +2,28 @@
   (:require [clojure.test :refer :all]
             [kepler.component :refer :all]))
 
-(deftest new-component-test
-  (let [component (new-component :test :ok)]
-    (is (= (type component) kepler.component.Component))
-    (is (= (:tag component) :test))
-    (is (= (:data component) :ok))))
-
-(deftest add-component-test
-  (let [component (new-component :test :ok)]
-    (is (= (add-component '() 1 component)
-           '[[1 :test :ok]]))))
-
-(deftest remove-component-test
-  (is (= (remove-component '([1 :test :ok]) 1 :test)
-         '())))
-
-(deftest find-component-test
-  (let [state '([1 :test :ok] [1 :test :fail])]
-    (is (= (find-component state 1 :test)
-           [1 :test :ok]))))
+(deftest component-test
+  (let [c (component :health 100 1)]
+    (is (= (type c) kepler.component.Component))))
 
 (deftest update-component-val-test
-  (let [state '([1 :test :fail])]
-    (is (= (update-component-val state 1 :test (constantly :ok))
-           '([1 :test :ok])))))
+  (let [c (component :foo "foo" 1)
+        update-fn (constantly "bar")]
+    (is (= (update-component-val update-fn c)
+           (component :foo "bar" 1)))))
+
+(deftest get-component-test
+  (let [needle (component :foo "foo" 1)
+        haystack (-> '()
+                  (conj needle)
+                  (conj (component :bar "bar" 1))
+                  (conj (component :foo "foo" 2)))]
+    (is (= (get-component haystack 1 :foo)
+           needle))))
+
+(deftest remove-component-test
+  (let [c (component :foo "foo" 1)
+        empty-state []
+        state (conj empty-state c)]
+      (is (= (remove-component state 1 :foo)
+             empty-state))))

@@ -1,16 +1,18 @@
 (ns kepler.systems.connection
-  (:require [kepler.component :refer [add-component remove-component]]
-            [kepler.components :refer [Uplink Life Pos]]))
+  (:require [kepler.component :refer [remove-component]]
+            [kepler.components.life :refer [life-component]]
+            [kepler.components.position :refer [position-component]]
+            [kepler.components.remote-control :refer [remote-control-component]]))
 
 (defn- add-bot [state {:keys [entity chan]}]
   (-> state
-      (add-component entity (Uplink chan))
-      (add-component entity (Life 100))
-      (add-component entity (Pos 0 0))))
+      (conj (remote-control-component chan entity))
+      (conj (life-component 100 entity))
+      (conj (position-component nil entity))))
 
 (defn- remove-bot [state {:keys [entity]}]
-  (-> state
-      (remove-component entity :uplink)))
+  (let [rc-type (:type (remote-control-component nil nil))]
+      (remove-component state entity rc-type)))
 
 (defn connection-system [state {:keys [type] :as action}]
   (case type

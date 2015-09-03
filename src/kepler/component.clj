@@ -1,37 +1,33 @@
 (ns kepler.component)
 
-(defrecord Component [tag
-                      data])
+(defrecord Component [entity
+                      type
+                      val])
 
-(defn new-component
-  [tag data]
-  (Component. tag data))
+;;; Keyword -> Any -> Entity -> Component
+(defn component [type val entity]
+  (Component. entity type val))
 
-(defn add-component
-  "Adds a component to the list of components"
-  [state entity {:keys [tag data]}]
-  (conj state [entity tag data]))
+;;; Fn -> Component -> Component
+(defn update-component-val [fn component]
+  (update component :val fn))
 
+
+;;; Entity -> Keyword -> Component -> Boolean
+(defn same-component? [entity type component]
+  (and
+   (= entity (:entity component))
+   (= type (:type component))))
+
+;;; State -> Entity -> Keyword -> Component
+(defn get-component
+  [state entity type]
+  (first (filter (partial same-component? entity type) state)))
+
+;;; State -> Entity -> Keyword -> State
 (defn remove-component
   "Removes any instances of a component from the list of components"
-  [state entity tag]
-  (filter
-   (fn [[e t]]
-     (not (and (= e entity) (= t tag))))
-   state))
+  [state entity type]
+  (filter (complement (partial same-component? entity type)) state))
 
-(defn find-component
-  [state entity tag]
-  (first (filter (fn [[e t]]
-                   (and (= e entity) (= t tag)))
-                 state)))
 
-(defn update-component-val
-  "Updates a component record in place. Useful for setting component values."
-  [state entity tag fn]
-  (let [[_ t old-val :as old-component] (find-component state entity tag)
-        new-val (fn old-val)
-        new-component (new-component t new-val)]
-    (-> state
-        (remove-component entity tag)
-        (add-component entity new-component))))
