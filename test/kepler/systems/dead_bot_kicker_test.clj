@@ -3,9 +3,6 @@
             [clojure.test :refer :all]
             [kepler.systems.dead-bot-kicker :refer :all]))
 
-(defn state-fixture [ch]
-  '([1 :life 0.0] [1 :uplink ch] [2 :life 100.0]))
-
 (def tick-action {:type :tick})
 
 

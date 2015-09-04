@@ -8,7 +8,7 @@
   (-> state
       (conj (remote-control-component chan entity))
       (conj (life-component 100 entity))
-      (conj (position-component nil entity))))
+      (conj (position-component {:x 0 :y 0} entity))))
 
 (defn- remove-bot [state {:keys [entity]}]
   (let [rc-type (:type (remote-control-component nil nil))]
