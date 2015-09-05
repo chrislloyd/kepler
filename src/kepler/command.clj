@@ -1,14 +1,13 @@
 (ns kepler.command
   (:require [schema.core :as s]))
 
-(def MaxMsgSize 140)
+;; (def MaxMsgSize 140)
 
 (def MoveCommand
   [(s/one (s/eq "MOVE") "type") (s/one (s/enum "←" "↓" "↑" "→") "dir")])
 
-;; (def TurnCommand
-;;   {:cmd (s/eq "turn")
-;;    :deg s/Int})
+(def TurnCommand
+  [(s/one (s/eq "TURN") "type") (s/one s/Int "deg")])
 
 ;; (def SayCommand
 ;;   {:cmd (s/eq "say")
@@ -36,7 +35,8 @@
 (s/defschema Command
   "A schema for commands that players can send to their bots"
   (s/conditional
-   #(= (first %) "MOVE") MoveCommand))
+   #(= (first %) "MOVE") MoveCommand
+   #(= (first %) "TURN") TurnCommand))
 
 (defn check-command
   "Checks an command"

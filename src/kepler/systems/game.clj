@@ -17,6 +17,7 @@
       
       ;; remote connections
       (connection-system action)
+      ;; (bot-entry-position-system action)
 
       ;; actions
       (locomotion-system action)
@@ -27,6 +28,8 @@
 
       ;; environment
       (cosmic-ray-system action)
+
+      ;; (collision-system action)
 
       ;; death
       (dead-bot-kicker-system action)
