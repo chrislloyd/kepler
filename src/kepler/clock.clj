@@ -10,7 +10,7 @@
 
 (defn- tick [clock]
   ((:dispatcher clock) {:type :tick
-                        :tick (java.util.UUID/randomUUID)}))
+                        :tick (str (java.util.UUID/randomUUID))}))
 
 (defn start-clock [clock]
   (do

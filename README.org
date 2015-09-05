@@ -1,0 +1,10 @@
+* DONE item-use-system
+* TODO lazer-use-fn
+* TODO bot-placement-system
+* TODO electrical-system
+* TODO solar-charge-system
+* TODO kick bots when battery reaches 0% charge
+* TODO collision-system
+* TODO inventory-system picking up and dropping items
+* TODO speech-system
+* TODO documentation!

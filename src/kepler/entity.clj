@@ -3,4 +3,4 @@
 (defn new-entity
   "Generates a new entity"
   []
-  (java.util.UUID/randomUUID))
+  (str (java.util.UUID/randomUUID)))

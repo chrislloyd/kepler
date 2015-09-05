@@ -1,4 +1,4 @@
-(ns kepler.components.life
+(ns kepler.component.life
   (:require [kepler.component :refer [component]]))
 
 (defn life-component [life entity]

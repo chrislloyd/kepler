@@ -1,7 +1,7 @@
 (ns kepler.systems.dead-bot-kicker
   "On tick, cleans up uplink connections from dead bots. Leaves bot to decay."
   (:require [clojure.core.async :refer [>!!]]
-            [kepler.components.life :refer [is-dead?]]))
+            [kepler.component.life :refer [is-dead?]]))
 
 (defn- dead-component?
   [{:keys [type val]}]

@@ -1,6 +1,6 @@
-(ns kepler.components.inbox-test
+(ns kepler.component.inbox-test
   (:require [clojure.test :refer :all]
-            [kepler.components.inbox :refer :all]))
+            [kepler.component.inbox :refer :all]))
 
 (deftest send-msg-test
   (is (some #{"Hello world"}

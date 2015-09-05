@@ -2,7 +2,7 @@
   (:require [clojure.core.async :refer [>!!]]
             [kepler.component :refer [get-component]]))
 
-(def attribute-whitelist #{:pos :life :inbox :rot})
+(def attribute-whitelist #{:pos :life :inbox :rot :inventory})
 
 (defn- distance [{x1 :x y1 :y} {x2 :x y2 :y}]
   (Math/sqrt (+ (Math/pow (- x2 x1) 2)

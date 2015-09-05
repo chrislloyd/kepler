@@ -1,5 +1,5 @@
 (ns kepler.systems.decomposition
-  (:require [kepler.components.life :refer [is-dead?]]))
+  (:require [kepler.component.life :refer [is-dead?]]))
 
 (defn decomposition-system [state action]
   (if (= (:type action) :tick)

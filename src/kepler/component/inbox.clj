@@ -1,4 +1,4 @@
-(ns kepler.components.inbox
+(ns kepler.component.inbox
   (:require [kepler.component :refer [component]]))
 
 (defn inbox-component [entity]

@@ -5,9 +5,10 @@
              [dead-bot-kicker :refer [dead-bot-kicker-system]]
              [debug :refer [debug-system]]
              [decomposition :refer [decomposition-system]]
+             [inbox-zero :refer [inbox-zero-system]]
+             [inventory :refer [inventory-system]]
              [locomotion :refer [locomotion-system]]
-             [state-broadcaster :refer [state-broadcaster-system]]
-             [inbox-zero :refer [inbox-zero-system]]]))
+             [state-broadcaster :refer [state-broadcaster-system]]]))
 
 (def DefaultState '())
 
@@ -21,8 +22,8 @@
 
       ;; actions
       (locomotion-system action)
+      (inventory-system action)
       ;; (speech-system action)
-      ;; (inventory-system action)
       ;; (fab-system action)
       ;; (energy-converter-system)
 
@@ -40,6 +41,5 @@
       
       ;; clenup
       (inbox-zero-system action)
-
-      (debug-system action)))
+      ))
 

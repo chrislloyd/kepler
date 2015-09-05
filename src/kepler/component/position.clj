@@ -1,4 +1,4 @@
-(ns kepler.components.position
+(ns kepler.component.position
   (:require [kepler.component :refer [component]]))
 
 (defn- pt [x y]

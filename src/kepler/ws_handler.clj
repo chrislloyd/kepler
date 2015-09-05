@@ -5,18 +5,31 @@
             [kepler.entity :refer [new-entity]]))
 
 (defn- add-bot-action [entity chan]
-  {:type :add-bot
-   :entity entity
-   :chan chan})
+  {:type :add-bot :entity entity :chan chan})
 
 (defn- remove-bot-action [entity]
-  {:type :remove-bot
-   :entity entity})
+  {:type :remove-bot :entity entity})
+
+(defn- move-action [entity dir]
+  {:type :move :entity entity :dir dir})
+
+(defn- turn-action [entity dr]
+  {:type :turn :entity entity :dr dr})
+
+(defn- use-action [entity item]
+  {:type :use :entity entity :item item})
+
+(defn- bad-cmd-action [entity cmd]
+  {:type :bad-cmd :entity entity :cmd cmd})
 
 (defn- cmd-action [entity cmd]
-  {:type (if (nil? (check-command cmd)) :cmd :bad-cmd)
-   :entity entity
-   :cmd cmd})
+  (if (nil? (check-command cmd))
+    (let [[name arg] cmd]
+      (case name
+        "MOVE" (move-action entity arg)
+        "TURN" (turn-action entity arg)
+        "USE" (use-action entity arg)))
+    (bad-cmd-action entity cmd)))
 
 (defn- handler [dispatch {:keys [ws-channel] :as req}]
   (let [entity (new-entity)
@@ -30,7 +43,6 @@
                         (do
                           (dispatch (cmd-action entity (:message message)))
                           (recur))
-                        
                         (dispatch (remove-bot-action entity))))
           uplink ([event]
               (case (:type event)

@@ -7,7 +7,10 @@
   [(s/one (s/eq "MOVE") "type") (s/one (s/enum "←" "↓" "↑" "→") "dir")])
 
 (def TurnCommand
-  [(s/one (s/eq "TURN") "type") (s/one s/Int "deg")])
+  [(s/one (s/eq "TURN") "type") (s/one s/Int "dr")])
+
+(def UseCommand
+  [(s/one (s/eq "USE") "type") (s/one s/Str "item")])
 
 ;; (def SayCommand
 ;;   {:cmd (s/eq "say")
@@ -36,7 +39,8 @@
   "A schema for commands that players can send to their bots"
   (s/conditional
    #(= (first %) "MOVE") MoveCommand
-   #(= (first %) "TURN") TurnCommand))
+   #(= (first %) "TURN") TurnCommand
+   #(= (first %) "USE") UseCommand))
 
 (defn check-command
   "Checks an command"

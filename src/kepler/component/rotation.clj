@@ -1,4 +1,4 @@
-(ns kepler.components.rotation
+(ns kepler.component.rotation
   (:require [kepler.component :refer [component]]))
 
 (defn rotation-component [r entity]

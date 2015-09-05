@@ -2,25 +2,27 @@
   (:require [kepler
              [component :refer [remove-component]]
              [entity :refer [new-entity]]]
-            [kepler.components
+            [kepler.component.item :refer [item-component]]
+            [kepler.component
+             [inventory :refer [inventory-component]]
              [life :refer [life-component]]
              [position :refer [position-component]]
              [remote-control :refer [remote-control-component]]
              [rotation :refer [rotation-component]]]))
 
 (defn- add-bot [state {:keys [entity chan]}]
-  (let [drill-entity (new-entity)]
-     (-> state
-         ;; (conj (usable-component "drill" drill-entity))
+  (let [lazer-entity (new-entity)]
+    (-> state
+        (conj (item-component "lazer" lazer-entity))
 
-         (conj (remote-control-component chan entity))
-         (conj (life-component 100 entity))
-         (conj (position-component {:x 0 :y 0} entity))
-         (conj (rotation-component 0 entity)))))
+        (conj (remote-control-component chan entity))
+        (conj (life-component 100 entity))
+        (conj (position-component {:x 0 :y 0} entity))
+        (conj (rotation-component 0 entity))
+        (conj (inventory-component #{lazer-entity} entity)))))
 
 ;;; use-drill :: State -> Item -> Entity -> State
 ;;; (defn use-drill [state])
-
 
 (defn- remove-bot [state {:keys [entity]}]
   (let [rc-type (:type (remote-control-component nil nil))]

@@ -1,4 +1,4 @@
-(ns kepler.components.remote-control
+(ns kepler.component.remote-control
   (:require [kepler.component :refer [component]]))
 
 (defn remote-control-component [chan entity]

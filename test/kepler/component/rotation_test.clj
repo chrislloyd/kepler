@@ -1,6 +1,6 @@
-(ns kepler.components.rotation-test
+(ns kepler.component.rotation-test
   (:require [clojure.test :refer :all]
-            [kepler.components.rotation :refer :all]))
+            [kepler.component.rotation :refer :all]))
 
 (deftest turn-test
   (is (= (turn 360 0) 0))

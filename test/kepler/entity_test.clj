@@ -4,4 +4,5 @@
 
 (deftest new-entity-test
   (is (= (type (new-entity))
-         java.util.UUID)))
+         java.lang.String))
+  (is (not (= (new-entity) (new-entity)))))

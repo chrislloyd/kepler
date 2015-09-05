@@ -2,6 +2,8 @@
   (:require [clojure.test :refer :all]
             [kepler.command :refer :all]))
 
-; (deftest add-component-test
-;   (is (= (add-component '() 1 component)
-;          '[[1 :test :ok]])))
+(deftest valiate-command-test
+  (is (validate-command ["MOVE", "→"]))
+  (is (validate-command ["TURN", 360]))
+  (is (validate-command ["USE", "abcd-1234"])))
+

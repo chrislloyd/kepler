@@ -16,6 +16,7 @@
          clock  (with-clock {:period 300
                              :dispatcher dispatcher})
          wss (with-server {:handler ws-handler
+                           :clock clock
                            :server-opts {:port 5000}})]
         (latch)))
 
