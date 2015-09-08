@@ -2,17 +2,11 @@
   (:require [clojure.core.async :refer [>!!]]
             [kepler.component :refer [get-component]]))
 
-(def attribute-whitelist #{:pos :life :inbox :rot :inventory})
+(def attribute-whitelist #{:pos :life :inbox :rot :inventory :energy})
 
 (defn- distance [{x1 :x y1 :y} {x2 :x y2 :y}]
   (Math/sqrt (+ (Math/pow (- x2 x1) 2)
                 (Math/pow (- y2 y1) 2))))
-
-(def s [
-        {:entity 1 :type :pos :val {:x 0 :y 0}}
-        {:entity 2 :type :pos :val {:x 5 :y 5}}
-        {:entity 3 :type :pos :val {:x 100 :y 100}}
-])
 
 (defn- nearby-entities [state me]
   (let [entity-pos (:val (get-component state me :pos))]
@@ -38,7 +32,7 @@
                  (nearby-entities state entity))})
 
 (defn- send-payload-downlink [chan payload]
-  (let [event {:type :tick :payload payload}]
+  (let [event {:type :tick :state payload}]
     (>!! chan event)))
 
 (defn state-broadcaster-system [state {:keys [type] :as action}]

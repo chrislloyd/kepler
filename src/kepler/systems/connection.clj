@@ -1,14 +1,19 @@
 (ns kepler.systems.connection
-  (:require [kepler.component
+  (:require [kepler
+             [component :refer [remove-component]]
+             [entity :refer [new-entity]]
+             [pt :refer [pt]]]
+            [kepler.component
              [inventory :refer [inventory-component]]
+             [item :refer [item-component]]
              [life :refer [life-component]]
              [position :refer [position-component]]
              [remote-control :refer [remote-control-component]]
              [rotation :refer [rotation-component]]]
-            [kepler.component.item :refer [item-component]]
-            [kepler
-             [component :refer [remove-component]]
-             [entity :refer [new-entity]]]))
+            [kepler.component.battery :refer [battery-component]]))
+
+(defn entry-pt []
+  (pt 0 0))
 
 (defn- add-bot [state {:keys [entity chan]}]
   (let [lazer-entity (new-entity)]
@@ -17,8 +22,9 @@
 
         (conj (remote-control-component chan entity))
         (conj (life-component 100 entity))
-        (conj (position-component {:x 0 :y 0} entity))
-        (conj (rotation-component 0 entity))
+        (conj (battery-component 100 entity))
+        (conj (position-component (entry-pt) entity))
+        (conj (rotation-component (rand 360) entity))
         (conj (inventory-component #{lazer-entity} entity)))))
 
 ;;; use-drill :: State -> Item -> Entity -> State

@@ -47,7 +47,7 @@
           uplink ([event]
               (case (:type event)
                 :tick (do
-                        (>!! ws-channel (:payload event))
+                        (>!! ws-channel event )
                         (recur))
                 :kick (do
                         (>!! ws-channel event)
