@@ -1,14 +1,14 @@
 (ns kepler.systems.connection
-  (:require [kepler
-             [component :refer [remove-component]]
-             [entity :refer [new-entity]]]
-            [kepler.component.item :refer [item-component]]
-            [kepler.component
+  (:require [kepler.component
              [inventory :refer [inventory-component]]
              [life :refer [life-component]]
              [position :refer [position-component]]
              [remote-control :refer [remote-control-component]]
-             [rotation :refer [rotation-component]]]))
+             [rotation :refer [rotation-component]]]
+            [kepler.component.item :refer [item-component]]
+            [kepler
+             [component :refer [remove-component]]
+             [entity :refer [new-entity]]]))
 
 (defn- add-bot [state {:keys [entity chan]}]
   (let [lazer-entity (new-entity)]
@@ -25,8 +25,7 @@
 ;;; (defn use-drill [state])
 
 (defn- remove-bot [state {:keys [entity]}]
-  (let [rc-type (:type (remote-control-component nil nil))]
-      (remove-component state entity rc-type)))
+  (remove-component state entity :uplink))
 
 (defn connection-system [state {:keys [type] :as action}]
   (case type

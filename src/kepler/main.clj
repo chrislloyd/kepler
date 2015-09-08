@@ -5,8 +5,8 @@
              [engine :refer [dispatch-action with-engine]]
              [ws-handler :refer [new-ws-handler]]]
             [kepler.systems.game :refer [game-system]]
-            [yoyo :refer [set-system-fn! start! ylet]]
-            [yoyo.http-kit :refer [with-server]]))
+            [yoyo.http-kit :refer [with-server]]
+            [yoyo :refer [set-system-fn! start! ylet]]))
 
 (defn- make-system [latch]
   (ylet [engine (with-engine game-system)

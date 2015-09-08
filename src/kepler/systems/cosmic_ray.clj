@@ -1,6 +1,6 @@
 (ns kepler.systems.cosmic-ray
-  (:require [kepler.component :refer [update-component-val]]
-            [kepler.component.life :refer [hurt life-component]]))
+  (:require [kepler.component.life :refer [hurt life-component]]
+            [kepler.component :refer [update-component-val]]))
 
 (def radiation-decay (partial hurt 1))
 

@@ -3,7 +3,6 @@
              [connection :refer [connection-system]]
              [cosmic-ray :refer [cosmic-ray-system]]
              [dead-bot-kicker :refer [dead-bot-kicker-system]]
-             [debug :refer [debug-system]]
              [decomposition :refer [decomposition-system]]
              [inbox-zero :refer [inbox-zero-system]]
              [inventory :refer [inventory-system]]

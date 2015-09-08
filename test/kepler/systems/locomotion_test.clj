@@ -1,7 +1,7 @@
 (ns kepler.systems.locomotion-test
   (:require [clojure.test :refer :all]
-            [kepler.systems.locomotion :refer :all]
-            [kepler.component.position :refer [position-component]]))
+            [kepler.component.position :refer [position-component]]
+            [kepler.systems.locomotion :refer :all]))
 
 (defn move-action [entity dir]
   {:type :move :entity entity :dir dir})

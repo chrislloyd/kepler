@@ -1,8 +1,6 @@
 (ns kepler.component.position
-  (:require [kepler.component :refer [component]]))
-
-(defn- pt [x y]
-  {:x x :y y})
+  (:require [kepler.component :refer [component]]
+            [kepler.pt :refer [pt]]))
 
 (defn position-component [pos entity]
   (component :pos pos entity))

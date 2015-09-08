@@ -12,22 +12,24 @@
 (defn update-component-val [fn component]
   (update component :val fn))
 
+(defn by-entity [entity]
+  (filter (fn [component] (= (:entity component) entity))))
 
-;;; Entity -> Keyword -> Component -> Boolean
-(defn same-component? [entity type component]
-  (and
-   (= entity (:entity component))
-   (= type (:type component))))
+(defn by-component [type]
+  (filter (fn [component] (= (:type component) type))))
+
+(defn by-component-entity [entity type]
+  (comp (by-entity entity) (by-component type)))
+
 
 ;;; State -> Entity -> Keyword -> Component
 (defn get-component
   [state entity type]
-  (first (filter (partial same-component? entity type) state)))
+  (first (eduction (by-component-entity entity type) state)))
 
 ;;; State -> Entity -> Keyword -> State
 (defn remove-component
   "Removes any instances of a component from the list of components"
   [state entity type]
-  (filter (complement (partial same-component? entity type)) state))
-
+  (filter #(not (and (= (:entity %) entity) (= (:type %) type))) state))
 

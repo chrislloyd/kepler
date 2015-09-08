@@ -1,46 +1,54 @@
 (ns kepler.item.lazer
-  (:require [kepler.item :refer [Item]]))
+  (:require [kepler.component.life :refer [hurt]]
+            [kepler.component :refer [by-component]]
+            [kepler
+             [component :refer [get-component update-component-val]]
+             [item :refer [Item]]]
+            [kepler.pt :refer [angle]]
+            [kepler.pt :refer [distance]]))
 
+(defn pt-in-range? [weapon attacker-pt attacker-dir target-pt]
+  (and (<= (Math/abs (- (angle attacker-pt target-pt) attacker-dir))
+           (:spread weapon))
+       (<= (distance attacker-pt target-pt)
+           (:range weapon))))
 
-;; def attack_from(attacker)
-;;     damage = 0
-;;     actors.select {|a| attacker.can_attack?(a)}.each do |victim|
-;;       victim.hurt(attacker.damage)
-;;       damage += attacker.damage
-;;     end
-;;     damage
-;;   end
+(defn- find-victims [weapon entity state]
+  (let [pos-component (get-component state entity :pos)
+        dir-component (get-component state entity :rotation)]
+    (if (and pos-component dir-component)
+      (let [pos (:val pos-component)
+            dir (:val dir-component)]
+        (set (eduction (comp (filter #(not (= (:entity %) entity)))
+                             (by-component :pos)
+                             (filter (fn [component]
+                                       
+                                       (pt-in-range? weapon
+                                                     pos
+                                                     dir
+                                                     (:val component))))
+                             (map :entity)) state)))
+      #{})))
 
-;; def distance(x,y)
-;;   Math.hypot(x-self.x, y-self.y)
-;; end
+(defn deal-damage-to-victims [weapon victims state]
+  (map (fn [component]
+         (if (and (contains? victims (:entity component))
+                  (= (:type component) :life))
+           (update-component-val (partial hurt (:damage weapon)) component)
+           component))
+       state))
 
-;; def distance_to(actor)
-;;   distance(actor.x, actor.y) rescue 0
-;; end
-
-;; def direction_to(actor)
-;;   (Math.atan2(x - actor.x, y - actor.y).to_deg + 180) % 360 rescue 0
-;; end
-
-
-(defn- in-cone? ())
-
-(defn- can-attack? [attacker victim]
-  ;; self != victim && !victim.dead? && in_cone?(victim, 2, range)
-  false)
-
-;; def in_cone?(obj, alpha, r)
-;;     (direction_to(obj)-dir).abs < alpha && distance_to(obj) <= r
-;;   end
-
-
-(deftype Lazer [energy damage]
+(defrecord Weapon [damage spread range]
   Item
   (use-item [this entity state]
-            (do
-              (prn "MAJOR LAZER!")
+            (if-let [pos-component (get-component state entity :pos)]
+              (if-let [dir-component (get-component state entity :rotation)]
+                (let [pos (:val pos-component)
+                      dir (:val dir-component)
+                      victims (find-victims this entity state)]
+                  (deal-damage-to-victims this victims state))
+                state)
               state)))
 
-(defn new-lazer [energy damage]
-  (Lazer. energy damage))
+(defn new-weapon [args]
+  (map->Weapon args))

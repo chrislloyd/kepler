@@ -1,12 +1,14 @@
 (ns kepler.systems.inventory
   (:require [kepler.component :refer [get-component]]
-            [kepler.item.lazer :refer [new-lazer]]
+            [kepler.item.lazer :refer [new-weapon]]
             [kepler.item :refer [use-item]]))
 
 ;;; incoming action
 ;;; {:type :use, :entity "abc-123", :item "abc-123"}
 
-(def tech-tree {"lazer" (new-lazer 100 5)})
+(def tech-tree {"lazer" (new-weapon {:damage 100
+                                     :spread 5
+                                     :range 20})})
 
 (defn- item-in-inventory? [state entity item]
   (when-let [inventory-component (get-component state entity :inventory)]
