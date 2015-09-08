@@ -4,7 +4,7 @@
 ;; (def MaxMsgSize 140)
 
 (def MoveCommand
-  [(s/one (s/eq "MOVE") "type") (s/one (s/enum "←" "↓" "↑" "→") "dir")])
+  [(s/one (s/eq "MOVE") "type") (s/one (s/enum "up" "down" "left" "right") "dir")])
 
 (def TurnCommand
   [(s/one (s/eq "TURN") "type") (s/one s/Int "dr")])

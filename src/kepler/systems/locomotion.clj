@@ -5,10 +5,10 @@
 
 (defn- move-position [dir c]
   (let [fn (case dir
-             "↑" move-up
-             "←" move-left
-             "↓" move-down
-             "→" move-right)]
+             "up" move-up
+             "down" move-down
+             "left" move-left
+             "right" move-right)]
     (update-component-val fn c)))
 
 (defn- move-entity [state entity dir]
