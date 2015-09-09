@@ -1,35 +1,45 @@
 (ns kepler.systems.state-broadcaster
   (:require [clojure.core.async :refer [<!! >! >!! chan go]]
-            [kepler.component :refer [get-component]]))
+            [clojure.set :refer [union]]
+            [kepler.component :refer [by-component by-entity get-component]]))
 
-(def attribute-whitelist #{:pos :life :inbox :rot :inventory :energy})
+(defn- components-for-serialization [entity viewer]
+  (let [components #{:pos :life :rot}]
+    (if (= entity viewer)
+      (union components #{:inventory :energy})
+      components)))
 
 (defn- distance [{x1 :x y1 :y} {x2 :x y2 :y}]
   (Math/sqrt (+ (Math/pow (- x2 x1) 2)
                 (Math/pow (- y2 y1) 2))))
 
+(defn- by-radius [c r]
+  (comp (by-component :pos)
+        (filter (fn [component]
+                  (<= (distance c (:val component)) r)))))
+
 (defn- nearby-entities [state me]
   (let [entity-pos (:val (get-component state me :pos))]
     (->> state
-         (filter (fn [{:keys [entity type val]}]
-                   (and (not (= entity me))
-                        (= type :pos)
-                        (<= (distance entity-pos val) 20))))
-         (map :entity)
+         (eduction (comp (by-radius entity-pos 20)
+                         (map :entity)))
          (set))))
 
-(defn- entity->payload [state entity]
+(defn- entity->payload [state viewer entity]
   (reduce (fn [o {:keys [type val]}] (assoc o type val))
-          {:entity entity}
-          (filter #(and (= (:entity %) entity)
-                        (contains? attribute-whitelist (:type %)))
-                  state)))
+          {:id entity}
+          (eduction (comp (by-entity entity)
+                          (filter #(contains? (components-for-serialization
+                                               entity
+                                               viewer)
+                                              (:type %))))
+                    state)))
 
 (defn- payload [state entity tick]
   {:tick tick
-   :me (entity->payload state entity)
-   :sensors (map (partial entity->payload state)
-                 (nearby-entities state entity))})
+   :me entity
+   :entities (map (partial entity->payload state entity)
+                  (nearby-entities state entity))})
 
 (defn- send-payload-downlink [chan state]
   (>!! chan {:type :tick
