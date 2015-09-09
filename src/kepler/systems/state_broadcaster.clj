@@ -1,5 +1,5 @@
 (ns kepler.systems.state-broadcaster
-  (:require [clojure.core.async :refer [>!!]]
+  (:require [clojure.core.async :refer [<!! >! >!! chan go]]
             [kepler.component :refer [get-component]]))
 
 (def attribute-whitelist #{:pos :life :inbox :rot :inventory :energy})
@@ -31,18 +31,26 @@
    :sensors (map (partial entity->payload state)
                  (nearby-entities state entity))})
 
-(defn- send-payload-downlink [chan payload]
-  (let [event {:type :tick :state payload}]
-    (>!! chan event)))
+(defn- send-payload-downlink [chan state]
+  (>!! chan {:type :tick
+             :state state}))
+
+(defn- async-pmap [f col]
+  (let [chans (repeatedly (count col) chan)]
+    (doseq [[c e] (map vector chans col)]
+      (go (>! c (f e))))
+    (map <!! chans)))
 
 (defn state-broadcaster-system [state {:keys [type] :as action}]
   (if (= type :tick)
     (do
-      ;; If this operation was done serially it would be a potential attack vector. The first bot could be slow to accept the connection holding up all the other connections. This could still possibly be the case because `pmap` blocks on the return value, however it just slows the world. A potential optimization could be doing the send in a go block with a non-blocking put.
-      (pmap
-       (fn [{:keys [entity val]}]
-         (send-payload-downlink val
-                                (payload state entity (:tick action))))
-       (filter #(= (:type %) :uplink) state))
+      ;; If this operation was done serially it would be a potential attack vector. The first bot could be slow to accept the connection holding up all the other connections. This could still possibly be the case because `async-pmap` blocks on the return value, however it just slows the world. A potential optimization could be doing the send in a go block with a non-blocking put.
+      (let [uplinks (filter #(= (:type %) :uplink) state)
+            tick (:tick action)]
+        (async-pmap
+         (fn [{:keys [entity val]}]
+           (send-payload-downlink val
+                                  (payload state entity tick)))
+         uplinks))
       state)
     state))
