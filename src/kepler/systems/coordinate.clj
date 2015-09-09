@@ -5,14 +5,15 @@
 
   The system also approximates some math so that the coordinates can be Integers.
 
-  [1] http://arxiv.org/ftp/arxiv/papers/1004/1004.1091.pdf")
+  [1] http://arxiv.org/ftp/arxiv/papers/1004/1004.1091.pdf"
+  (:require [kepler.component :refer [update-component-val]]
+            [kepler.component.position :refer [wrap]]))
 
-(def lim 1000)
+(def lim 500)
 
-(defn- wrap-position-component
-  [[entity type {:keys [x y]} :as component]]
-  (if (= type :pos)
-    [entity type {:x (mod x lim) :y (mod y lim)}]
+(defn- wrap-position-component [component]
+  (if (= (:type component) :pos)
+    (update-component-val (partial wrap lim) component)
     component))
 
 (defn coordinate-system [state action]

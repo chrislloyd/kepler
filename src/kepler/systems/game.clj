@@ -1,6 +1,7 @@
 (ns kepler.systems.game
   (:require [kepler.systems
              [connection :refer [connection-system]]
+             [coordinate :refer [coordinate-system]]
              [cosmic-ray :refer [cosmic-ray-system]]
              [dead-bot-kicker :refer [dead-bot-kicker-system]]
              [decomposition :refer [decomposition-system]]
@@ -28,6 +29,7 @@
 
       ;; environment
       (cosmic-ray-system action)
+      (coordinate-system action)
 
       ;; (collision-system action)
 

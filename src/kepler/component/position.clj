@@ -16,3 +16,7 @@
 
 (defn move-right [{:keys [x y]}]
   (pt (+ x 1) y))
+
+(defn wrap [lim {:keys [x y]}]
+  (pt (- (mod (+ x lim) (* lim 2)) lim)
+      (- (mod (+ y lim) (* lim 2)) lim)))
