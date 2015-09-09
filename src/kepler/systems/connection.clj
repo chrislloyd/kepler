@@ -24,7 +24,7 @@
         (conj (life-component 100 entity))
         (conj (battery-component 100 entity))
         (conj (position-component (entry-pt) entity))
-        (conj (rotation-component (rand 360) entity))
+        (conj (rotation-component 0.0 entity))
         (conj (inventory-component #{lazer-entity} entity)))))
 
 ;;; use-drill :: State -> Item -> Entity -> State
