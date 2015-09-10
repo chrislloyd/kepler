@@ -8,6 +8,7 @@
              [inbox-zero :refer [inbox-zero-system]]
              [inventory :refer [inventory-system]]
              [locomotion :refer [locomotion-system]]
+             [repair :refer [repair-system]]
              [state-broadcaster :refer [state-broadcaster-system]]]))
 
 (def DefaultState '())
@@ -18,20 +19,15 @@
       
       ;; remote connections
       (connection-system action)
-      ;; (bot-entry-position-system action)
 
       ;; actions
       (locomotion-system action)
       (inventory-system action)
-      ;; (speech-system action)
-      ;; (fab-system action)
-      ;; (energy-converter-system)
+      (repair-system action)
 
       ;; environment
       (cosmic-ray-system action)
       (coordinate-system action)
-
-      ;; (collision-system action)
 
       ;; death
       (dead-bot-kicker-system action)

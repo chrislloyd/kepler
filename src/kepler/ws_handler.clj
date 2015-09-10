@@ -10,6 +10,9 @@
 (defn- remove-bot-action [entity]
   {:type :remove-bot :entity entity})
 
+(defn- repair-action [entity]
+  {:type :repair :entity entity})
+
 (defn- move-action [entity dir]
   {:type :move :entity entity :dir dir})
 
@@ -26,6 +29,7 @@
   (if (nil? (check-command cmd))
     (let [[name arg] cmd]
       (case name
+        "REPAIR" (repair-action entity)
         "MOVE" (move-action entity arg)
         "TURN" (turn-action entity arg)
         "USE" (use-action entity arg)))

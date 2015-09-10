@@ -3,6 +3,9 @@
 
 ;; (def MaxMsgSize 140)
 
+(def RepairCommand
+  [(s/one (s/eq "REPAIR") "type")])
+
 (def MoveCommand
   [(s/one (s/eq "MOVE") "type") (s/one (s/enum "up" "down" "left" "right") "dir")])
 
@@ -38,6 +41,7 @@
 (s/defschema Command
   "A schema for commands that players can send to their bots"
   (s/conditional
+   #(= (first %) "REPAIR") RepairCommand
    #(= (first %) "MOVE") MoveCommand
    #(= (first %) "TURN") TurnCommand
    #(= (first %) "USE") UseCommand))
