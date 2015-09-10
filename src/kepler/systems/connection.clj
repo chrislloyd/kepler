@@ -13,7 +13,7 @@
             [kepler.component.battery :refer [battery-component]]))
 
 (defn entry-pt []
-  (pt 0 0))
+  (pt (rand 20) (rand 20)))
 
 (defn- add-bot [state {:keys [entity chan]}]
   (let [lazer-entity (new-entity)]
