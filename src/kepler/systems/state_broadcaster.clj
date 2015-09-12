@@ -6,7 +6,7 @@
              [util :refer [async-pmap]]]))
 
 (defn- components-for-serialization [entity viewer]
-  (let [components #{:pos :life :rot}]
+  (let [components #{:pos :life :rot :name}]
     (if (= entity viewer)
       (union components #{:inventory :energy})
       components)))
