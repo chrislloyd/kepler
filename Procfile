@@ -1,1 +1,1 @@
-viz: ruby -run -e httpd -- --port $PORT rc-space-output
+viz: cd rc-state-output && python -m SimpleHTTPServer $PORT
