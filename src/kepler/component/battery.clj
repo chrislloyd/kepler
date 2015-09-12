@@ -8,4 +8,4 @@
   (min (+ energy amount) 100))
 
 (defn deplete [amount energy]
-  (max (+ energy amount) 0))
+  (- energy amount))
