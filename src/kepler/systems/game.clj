@@ -7,6 +7,7 @@
              [decomposition :refer [decomposition-system]]
              [inventory :refer [inventory-system]]
              [locomotion :refer [locomotion-system]]
+             [name :refer [name-system]]
              [repair :refer [repair-system]]
              [state-broadcaster :refer [state-broadcaster-system]]
              [state-writer :refer [state-writer-system]]]))
@@ -24,6 +25,7 @@
       (locomotion-system action)
       (inventory-system action)
       (repair-system action)
+      (name-system action)
 
       ;; environment
       (cosmic-ray-system action)

@@ -25,6 +25,9 @@
 (defn- bad-cmd-action [entity cmd]
   {:type :bad-cmd :entity entity :cmd cmd})
 
+(defn- name-action [entity new-name]
+  {:type :name :entity entity :name new-name})
+
 (defn- cmd-action [entity cmd]
   (if (nil? (check-command cmd))
     (let [[name arg] cmd]
@@ -32,7 +35,8 @@
         "REPAIR" (repair-action entity)
         "MOVE" (move-action entity arg)
         "TURN" (turn-action entity arg)
-        "USE" (use-action entity arg)))
+        "USE" (use-action entity arg)
+        "NAME" (name-action entity arg)))
     (bad-cmd-action entity cmd)))
 
 (defn- handler [dispatch {:keys [ws-channel] :as req}]

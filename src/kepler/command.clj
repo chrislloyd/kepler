@@ -15,6 +15,9 @@
 (def UseCommand
   [(s/one (s/eq "USE") "type") (s/one s/Str "item")])
 
+(def NameCommand
+  [(s/one (s/eq "NAME") "type") (s/both s/Str (s/pred #(<= (count %) 140)))])
+
 ;; (def SayCommand
 ;;   {:cmd (s/eq "say")
 ;;    :msg (s/both s/Str (s/pred #(<= (count %) MaxMsgSize)))})
@@ -44,7 +47,8 @@
    #(= (first %) "REPAIR") RepairCommand
    #(= (first %) "MOVE") MoveCommand
    #(= (first %) "TURN") TurnCommand
-   #(= (first %) "USE") UseCommand))
+   #(= (first %) "USE") UseCommand
+   #(= (first %) "NAME") NameCommand))
 
 (defn check-command
   "Checks an command"
