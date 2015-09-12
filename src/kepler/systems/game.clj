@@ -28,7 +28,7 @@
       (name-system action)
 
       ;; environment
-      (cosmic-ray-system action)
+      ;; (cosmic-ray-system action)
       (coordinate-system action)
 
       ;; death
