@@ -5,11 +5,11 @@
              [cosmic-ray :refer [cosmic-ray-system]]
              [dead-bot-kicker :refer [dead-bot-kicker-system]]
              [decomposition :refer [decomposition-system]]
-             [inbox-zero :refer [inbox-zero-system]]
              [inventory :refer [inventory-system]]
              [locomotion :refer [locomotion-system]]
              [repair :refer [repair-system]]
-             [state-broadcaster :refer [state-broadcaster-system]]]))
+             [state-broadcaster :refer [state-broadcaster-system]]
+             [state-writer :refer [state-writer-system]]]))
 
 (def DefaultState '())
 
@@ -34,9 +34,5 @@
       (decomposition-system action)
 
       ;; comms
-      (state-broadcaster-system action)
-      
-      ;; clenup
-      (inbox-zero-system action)
-      ))
-
+      (state-broadcaster-system action)      
+      (state-writer-system action)))
