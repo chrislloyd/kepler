@@ -1,7 +1,9 @@
 (ns kepler.systems.state-broadcaster
-  (:require [clojure.core.async :refer [<!! >! >!! chan go]]
+  (:require [clojure.core.async :refer [>!! chan]]
             [clojure.set :refer [union]]
-            [kepler.component :refer [by-component by-entity get-component]]))
+            [kepler
+             [component :refer [by-component by-entity get-component]]
+             [util :refer [async-pmap]]]))
 
 (defn- components-for-serialization [entity viewer]
   (let [components #{:pos :life :rot}]
@@ -44,12 +46,6 @@
 (defn- send-payload-downlink [chan state]
   (>!! chan {:type :tick
              :state state}))
-
-(defn- async-pmap [f col]
-  (let [chans (repeatedly (count col) chan)]
-    (doseq [[c e] (map vector chans col)]
-      (go (>! c (f e))))
-    (map <!! chans)))
 
 (defn state-broadcaster-system [state {:keys [type] :as action}]
   (if (= type :tick)
