@@ -6,7 +6,9 @@
                  [jarohen/yoyo.http-kit "0.0.4"]
                  [org.clojure/clojure "1.7.0"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
-                 [prismatic/schema "1.0.0"]]
+                 [prismatic/schema "1.0.0"]
+                 [ring/ring-core "1.3.2"]
+                 [compojure "1.3.4"]]
   :main ^:skip-aot kepler.main
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
