@@ -41,7 +41,6 @@
   Item
   (use-item [this entity state]
             (let [victims (find-victims this entity state)]
-              (prn "shooting " victims)
               (deal-damage-to-victims this victims state))))
 
 (defn new-weapon [args]
