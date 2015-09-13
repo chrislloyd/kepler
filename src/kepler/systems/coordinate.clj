@@ -9,7 +9,7 @@
   (:require [kepler.component :refer [update-component-val]]
             [kepler.component.position :refer [wrap]]))
 
-(def lim 500)
+(def lim 50)
 
 (defn- wrap-position-component [component]
   (if (= (:type component) :pos)
