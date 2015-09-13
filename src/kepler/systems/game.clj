@@ -10,9 +10,25 @@
              [name :refer [name-system]]
              [repair :refer [repair-system]]
              [state-broadcaster :refer [state-broadcaster-system]]
-             [state-writer :refer [state-writer-system]]]))
+             [state-writer :refer [state-writer-system]]]
+            [kepler.component :refer [update-component-val]]))
 
 (def DefaultState '())
+
+(defn shooting-toggler-thingy-system [state action]
+  (case (:type action)
+    :use (map (fn [component]
+                (if (= (:type component) :shooting)
+                  (update-component-val (constantly true) component)
+                  component))
+              state)
+    :tick (map (fn [component]
+                 (if (= (:type component) :shooting)
+                   (update-component-val (constantly false) component)
+                   component))
+               state)
+    state))
+
 
 (defn game-system
   [state action]
@@ -37,4 +53,6 @@
 
       ;; comms
       (state-broadcaster-system action)      
-      (state-writer-system action)))
+      (state-writer-system action)
+
+      (shooting-toggler-thingy-system action)))

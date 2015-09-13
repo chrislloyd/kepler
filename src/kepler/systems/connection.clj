@@ -11,7 +11,9 @@
              [name :refer [name-component]]
              [position :refer [position-component]]
              [remote-control :refer [remote-control-component]]
-             [rotation :refer [rotation-component]]]))
+             [rotation :refer [rotation-component]]
+             [shooting :refer [shooting-component]]]
+            [kepler.component.shooting :refer [shooting-component]]))
 
 (defn entry-pt []
   (pt (rand 20) (rand 20)))
@@ -23,6 +25,7 @@
 
         (conj (remote-control-component chan entity))
         (conj (name-component nil entity))
+        (conj (shooting-component entity))
         (conj (life-component 100 entity))
         (conj (battery-component 100 entity))
         (conj (position-component (entry-pt) entity))
