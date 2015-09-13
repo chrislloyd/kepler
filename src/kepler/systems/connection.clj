@@ -16,7 +16,8 @@
             [kepler.component.shooting :refer [shooting-component]]))
 
 (defn entry-pt []
-  (pt (rand 20) (rand 20)))
+  (pt (int (Math/floor (rand 20)))
+      (int (Math/floor (rand 20)))))
 
 (defn- add-bot [state {:keys [entity chan]}]
   (let [lazer-entity (new-entity)]
