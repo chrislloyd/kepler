@@ -11,8 +11,7 @@
 
 (deftest deal-damage-to-victims-test
   (let [weapon (new-weapon {:damage 10})
-        victims #{"victim"}
-                ]
+        victims #{"victim"}]
     (is (= (deal-damage-to-victims weapon
                                    victims
                                    [{:entity "victim"

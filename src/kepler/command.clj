@@ -12,8 +12,8 @@
 (def TurnCommand
   [(s/one (s/eq "TURN") "type") (s/one s/Num "dr")])
 
-(def UseCommand
-  [(s/one (s/eq "USE") "type") (s/one s/Str "item")])
+(def ShootCommand
+  [(s/one (s/eq "SHOOT") "type")])
 
 (def NameCommand
   [(s/one (s/eq "NAME") "type") (s/both s/Str (s/pred #(<= (count %) 140)))])
@@ -44,10 +44,10 @@
 (s/defschema Command
   "A schema for commands that players can send to their bots"
   (s/conditional
-   #(= (first %) "REPAIR") RepairCommand
+   ;; #(= (first %) "REPAIR") RepairCommand
    #(= (first %) "MOVE") MoveCommand
    #(= (first %) "TURN") TurnCommand
-   #(= (first %) "USE") UseCommand
+   #(= (first %) "SHOOT") ShootCommand
    #(= (first %) "NAME") NameCommand))
 
 (defn check-command

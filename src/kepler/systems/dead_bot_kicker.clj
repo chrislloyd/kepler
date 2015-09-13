@@ -1,7 +1,8 @@
 (ns kepler.systems.dead-bot-kicker
   "On tick, cleans up uplink connections from dead bots. Leaves bot to decay."
   (:require [clojure.core.async :refer [>!!]]
-            [kepler.component.life :refer [is-dead?]]))
+            [kepler.component.life :refer [is-dead?]]
+            [kepler.util :refer [async-pmap]]))
 
 (defn- dead-component?
   [{:keys [type val]}]
@@ -21,8 +22,10 @@
                         (map :entity)
                         (set))]
       (do
-        (pmap sweep-dead-uplink
+        (async-pmap sweep-dead-uplink
               (filter (partial kickable-uplink? entities)
                       state))
-        state))
+        (filter (fn [component]
+                  (not (contains? entities (:entity component))))
+                state)))
     state))

@@ -11,13 +11,14 @@
              [repair :refer [repair-system]]
              [state-broadcaster :refer [state-broadcaster-system]]
              [state-writer :refer [state-writer-system]]]
-            [kepler.component :refer [update-component-val]]))
+            [kepler.component :refer [update-component-val]]
+            [kepler.systems.score :refer [score-system]]))
 
 (def DefaultState '())
 
 (defn shooting-toggler-thingy-system [state action]
   (case (:type action)
-    :use (map (fn [component]
+    :shoot (map (fn [component]
                 (if (= (:type component) :shooting)
                   (update-component-val (constantly true) component)
                   component))
@@ -50,6 +51,9 @@
       ;; death
       (dead-bot-kicker-system action)
       (decomposition-system action)
+      
+      ;; scoring
+      (score-system action)
 
       ;; comms
       (state-broadcaster-system action)      

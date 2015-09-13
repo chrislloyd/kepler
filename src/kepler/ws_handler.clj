@@ -19,8 +19,8 @@
 (defn- turn-action [entity dr]
   {:type :turn :entity entity :dr dr})
 
-(defn- use-action [entity item]
-  {:type :use :entity entity :item item})
+(defn- shoot-action [entity]
+  {:type :shoot :entity entity})
 
 (defn- bad-cmd-action [entity cmd]
   {:type :bad-cmd :entity entity :cmd cmd})
@@ -32,10 +32,10 @@
   (if (nil? (check-command cmd))
     (let [[name arg] cmd]
       (case name
-        "REPAIR" (repair-action entity)
+        ;; "REPAIR" (repair-action entity)
         "MOVE" (move-action entity arg)
         "TURN" (turn-action entity arg)
-        "USE" (use-action entity arg)
+        "SHOOT" (shoot-action entity)
         "NAME" (name-action entity arg)))
     (bad-cmd-action entity cmd)))
 

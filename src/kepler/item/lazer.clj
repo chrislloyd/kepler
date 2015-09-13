@@ -15,14 +15,13 @@
 
 (defn- find-victims [weapon entity state]
   (let [pos-component (get-component state entity :pos)
-        dir-component (get-component state entity :rotation)]
+        dir-component (get-component state entity :rot)]
     (if (and pos-component dir-component)
       (let [pos (:val pos-component)
             dir (:val dir-component)]
         (set (eduction (comp (filter #(not (= (:entity %) entity)))
                              (by-component :pos)
                              (filter (fn [component]
-                                       
                                        (pt-in-range? weapon
                                                      pos
                                                      dir
@@ -41,14 +40,9 @@
 (defrecord Weapon [damage spread range]
   Item
   (use-item [this entity state]
-            (if-let [pos-component (get-component state entity :pos)]
-              (if-let [dir-component (get-component state entity :rotation)]
-                (let [pos (:val pos-component)
-                      dir (:val dir-component)
-                      victims (find-victims this entity state)]
-                  (deal-damage-to-victims this victims state))
-                state)
-              state)))
+            (let [victims (find-victims this entity state)]
+              (prn "shooting " victims)
+              (deal-damage-to-victims this victims state))))
 
 (defn new-weapon [args]
   (map->Weapon args))

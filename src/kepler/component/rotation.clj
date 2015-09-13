@@ -6,4 +6,3 @@
 
 (defn turn [dr r]
   (mod (+ r dr) 360))
-

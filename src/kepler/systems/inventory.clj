@@ -22,8 +22,16 @@
       state)
     state))
 
+(defn shoot [state action]
+  (let [item (new-weapon {:damage 10,
+                          :spread 5
+                          :range  20})
+        entity (:entity action)]
+    (use-item item entity state)))
+
 (defn inventory-system [state action]
   (case (:type action)
-    :use (entity-use-item state action)
+    ;; :use (entity-use-item state action)
+    :shoot (shoot state action)
     state))
 
