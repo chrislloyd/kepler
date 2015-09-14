@@ -12,3 +12,4 @@ pom.xml.asc
 .nrepl-port
 
 rc-state-output/state.json
+rc-state-output
