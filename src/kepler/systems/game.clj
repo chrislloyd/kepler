@@ -1,18 +1,18 @@
 (ns kepler.systems.game
-  (:require [kepler.systems
+  (:require [kepler.component :refer [update-component-val]]
+            [kepler.systems
              [connection :refer [connection-system]]
              [coordinate :refer [coordinate-system]]
-             [cosmic-ray :refer [cosmic-ray-system]]
              [dead-bot-kicker :refer [dead-bot-kicker-system]]
              [decomposition :refer [decomposition-system]]
+             [flair :refer [flair-system]]
              [inventory :refer [inventory-system]]
              [locomotion :refer [locomotion-system]]
              [name :refer [name-system]]
              [repair :refer [repair-system]]
+             [score :refer [score-system]]
              [state-broadcaster :refer [state-broadcaster-system]]
-             [state-writer :refer [state-writer-system]]]
-            [kepler.component :refer [update-component-val]]
-            [kepler.systems.score :refer [score-system]]))
+             [state-writer :refer [state-writer-system]]]))
 
 (def DefaultState '())
 
@@ -43,6 +43,7 @@
       (inventory-system action)
       (repair-system action)
       (name-system action)
+      (flair-system action)
 
       ;; environment
       ;; (cosmic-ray-system action)

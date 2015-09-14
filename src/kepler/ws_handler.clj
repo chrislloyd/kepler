@@ -1,42 +1,30 @@
 (ns kepler.ws-handler
   (:require [chord.http-kit :refer [wrap-websocket-handler]]
-            [clojure.core.async :refer [>!! alt! close! chan go]]
-            [kepler.command :refer [check-command]]
-            [kepler.entity :refer [new-entity]]))
-
-(defn- add-bot-action [entity chan]
-  {:type :add-bot :entity entity :chan chan})
-
-(defn- remove-bot-action [entity]
-  {:type :remove-bot :entity entity})
-
-(defn- repair-action [entity]
-  {:type :repair :entity entity})
-
-(defn- move-action [entity dir]
-  {:type :move :entity entity :dir dir})
-
-(defn- turn-action [entity dr]
-  {:type :turn :entity entity :dr dr})
-
-(defn- shoot-action [entity]
-  {:type :shoot :entity entity})
-
-(defn- bad-cmd-action [entity cmd]
-  {:type :bad-cmd :entity entity :cmd cmd})
-
-(defn- name-action [entity new-name]
-  {:type :name :entity entity :name new-name})
+            [clojure.core.async :refer [>!! alt! chan close! go]]
+            [compojure.core :refer [routes GET OPTIONS]]
+            [kepler.actions :refer [add-bot-action]]
+            [cheshire.core :as json]
+            [kepler.actions :refer [bad-cmd-action]]
+            [ring.util.response :refer [response]]
+            [kepler.actions :refer [flair-action]]
+            [kepler
+             [actions :refer [move-action name-action shoot-action turn-action]]
+             [command :refer [check-command]]
+             [entity :refer [new-entity]]]
+            [kepler.actions :refer [remove-bot-action]]))
 
 (defn- cmd-action [entity cmd]
   (if (nil? (check-command cmd))
     (let [[name arg] cmd]
       (case name
-        ;; "REPAIR" (repair-action entity)
         "MOVE" (move-action entity arg)
         "TURN" (turn-action entity arg)
         "SHOOT" (shoot-action entity)
-        "NAME" (name-action entity arg)))
+        "NAME" (name-action entity arg)
+        "FLAIR" (flair-action entity
+                              (nth cmd 1)
+                              (nth cmd 2)
+                              (nth cmd 3))))
     (bad-cmd-action entity cmd)))
 
 (defn- handler [dispatch {:keys [ws-channel] :as req}]

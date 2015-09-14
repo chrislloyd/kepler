@@ -3,6 +3,7 @@
              [entity :refer [new-entity]]
              [pt :refer [pt]]]
             [kepler.component
+             [flair :refer [flair-component]]
              [life :refer [life-component]]
              [name :refer [name-component]]
              [position :refer [position-component]]
@@ -22,6 +23,7 @@
 
         (conj (remote-control-component chan entity))
         (conj (score-component 0 entity))
+        (conj (flair-component entity))
         (conj (name-component nil entity))
         (conj (shooting-component entity))
         (conj (life-component 100 entity))
