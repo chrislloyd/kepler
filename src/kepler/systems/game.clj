@@ -19,7 +19,8 @@
 (defn shooting-toggler-thingy-system [state action]
   (case (:type action)
     :shoot (map (fn [component]
-                (if (= (:type component) :shooting)
+                (if (and (= (:entity component) (:entity action))
+                         (= (:type component) :shooting))
                   (update-component-val (constantly true) component)
                   component))
               state)
