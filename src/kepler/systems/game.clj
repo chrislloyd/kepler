@@ -11,26 +11,9 @@
              [name :refer [name-system]]
              [repair :refer [repair-system]]
              [score :refer [score-system]]
-             [state-broadcaster :refer [state-broadcaster-system]]
-             [state-writer :refer [state-writer-system]]]))
+             [state-broadcaster :refer [state-broadcaster-system]]]))
 
 (def DefaultState '())
-
-(defn shooting-toggler-thingy-system [state action]
-  (case (:type action)
-    :shoot (map (fn [component]
-                (if (and (= (:entity component) (:entity action))
-                         (= (:type component) :shooting))
-                  (update-component-val (constantly true) component)
-                  component))
-              state)
-    :tick (map (fn [component]
-                 (if (= (:type component) :shooting)
-                   (update-component-val (constantly false) component)
-                   component))
-               state)
-    state))
-
 
 (defn game-system
   [state action]
@@ -58,7 +41,4 @@
       (score-system action)
 
       ;; comms
-      (state-broadcaster-system action)      
-      (state-writer-system action)
-
-      (shooting-toggler-thingy-system action)))
+      (state-broadcaster-system action)))
