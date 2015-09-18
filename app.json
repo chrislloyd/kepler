@@ -1,0 +1,4 @@
+{
+  "name": "kepler",
+  "image": "heroku/clojure"
+}

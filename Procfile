@@ -1,1 +1,1 @@
-viz: cd rc-state-output && python -m SimpleHTTPServer $PORT
+web: lein run

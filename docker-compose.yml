@@ -1,0 +1,8 @@
+web:
+  build: .
+  command: 'bash -c ''lein run'''
+  working_dir: /app/user
+  environment:
+    PORT: 5000
+  ports:
+    - '5000:5000'
