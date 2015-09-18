@@ -9,7 +9,8 @@
             [yoyo :refer [set-system-fn! start! ylet]]))
 
 (defn- make-system [latch]
-  (ylet [engine (with-engine game-system)
+  (ylet [:let [port (Integer/parseInt (System/getenv "PORT"))]
+         engine (with-engine game-system)
          :let [dispatcher (partial dispatch-action engine)
                ws-handler (new-ws-handler {:dispatcher dispatcher
                                            :format :json})]
@@ -17,7 +18,7 @@
                              :dispatcher dispatcher})
          wss (with-server {:handler ws-handler
                            :clock clock
-                           :server-opts {:port 5000}})]
+                           :server-opts {:port port}})]
         (latch)))
 
 (defn -main [& args]
