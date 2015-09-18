@@ -12,4 +12,5 @@
                  [ring/ring-core "1.3.2"]]
   :main ^:skip-aot kepler.main
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all}}
+  :min-lein-version "2.5.2")
