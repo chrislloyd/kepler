@@ -1,0 +1,140 @@
+---
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{site.title}</title>
+  <link href="http://d2v52k3cl9vedd.cloudfront.net/basscss/7.0.4/basscss.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="root">
+    <div class="py4 container">
+      <h1 class="mb2">Kepler</h1>
+
+      <div class="h4 mt0 mb4 gray">
+        v0.1.0 - Automata Apoapsis
+      </div>
+
+      <ol class="list-reset flex mxn1 mb4">
+        <li>
+          <a class="p1" href="#story">Story</a>
+        </li>
+
+        <li>
+          <a class="p1" href="#documentation">Documentation</a>
+        </li>
+      </ol>
+
+      <h2 id="story">Story</h2>
+
+      <p><span>Humanity is interstellar. Planets are starting to be colonized
+      with the help of robot companions (“man's best friend”). As humans travel
+      to the boundaries of the universe, they also push the boundaries of
+      artificial intelligence. The game starts at the cusp of the singularity
+      on the planet</span> <em>Kepler 1a</em><span>. You are a robot trying to
+      achieve sentience. Create your own destiny in an unforgiving
+      environment.</span></p>
+
+      <h2 id="documentation">Documentation</h2>
+
+      <p><strong>Is there something you're stuck on?</strong> <span>Come and
+      see Chris Lloyd or Dave Newman in the middle of the room.</span></p>
+
+      <h4>High level overview</h4>
+
+      <p><span>There's a central server. It's running on</span>
+      <code>chrislloyd.local:5000</code><span>. The server only speaks
+      websockets. Your bot is going to connect to this server (via.
+      websockets). Every 300ms or so, your client will recieve a tick. This
+      data is formatted in JSON.</span></p>
+
+      <h4>Stuff you get from the server</h4>
+      <pre>
+<code>
+  {
+    "event": "tick",
+    "state": {
+      "tick": "abcd-1234",
+      "entity": "abcd-1234",
+      "entities": [{
+        "id": "abcd-1234",
+        "pos": {"x": 0, "y": 0},
+        ...
+      }]
+    }
+  }
+</code>
+</pre>
+
+      <p><span>Cool! The tick is just a random ID that changes. For simple bots
+      you can probably ignore it. The root entity
+      (</span><code>state/entity</code><span>) is your bot's ID. The</span>
+      <code>entities</code> <span>array is just a collection of other players
+      and things in the game.</span></p>
+
+      <h4>Commands</h4>
+
+      <p>You can send commands back to the server via. the websocket. They need
+      to be in JSON.</p>
+
+      <table class="table-light mb2">
+        <tbody>
+          <tr>
+            <td class="bold">MOVE</td>
+
+            <td>"up" | "down" | "left" | "right"</td>
+
+            <td>Moves your bot</td>
+          </tr>
+
+          <tr>
+            <td class="bold">TURN</td>
+
+            <td class="italic">Int</td>
+
+            <td>Turns your bot around</td>
+          </tr>
+
+          <tr>
+            <td class="bold">SHOOT</td>
+
+            <td></td>
+
+            <td>Goes boom</td>
+          </tr>
+
+          <tr>
+            <td class="bold">NAME</td>
+
+            <td class="italic">String</td>
+
+            <td>Set's your bot's name</td>
+          </tr>
+
+          <tr>
+            <td class="bold">FLAIR</td>
+
+            <td class="italic">Int, Int, Int</td>
+
+            <td>Set's your bot's flair color. 3 arguments, each is an integer
+            between 0-255 representing r, g &amp; b color components.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>These command should be formatted as tuples and serialized as
+      JSON.</p>
+      <pre>
+<code>["MOVE", "up"] ["NAME", "chrislloyd"] ["FLAIR", 255, 255, 255]</code>
+</pre>
+
+      <h2>Release Notes</h2>
+
+      <h3>0.1.0</h3>
+
+      <ul></ul>
+    </div>
+  </div>
+</body>
+</html>
