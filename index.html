@@ -3,75 +3,106 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>{site.title}</title>
+  <title>{{site.title}}</title>
   <link href="http://d2v52k3cl9vedd.cloudfront.net/basscss/7.0.4/basscss.min.css" rel="stylesheet">
+  <style>
+    body {
+    font-family: "SF UI Text", "Helvetica Neue", Helvetica, sans-serif;
+    }
+    h1, h2, h3, h4, h5, h6,
+    .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: "SF UI Display", "Helvetica Neue", Helvetica, sans-serif;
+    }
+  </style>
 </head>
 
 <body>
   <div id="root">
-    <div class="py4 container">
-      <h1 class="mb2">Kepler</h1>
+    <div class="py3 container px2">
 
-      <div class="h4 mt0 mb4 gray">
-        v0.1.0 - Automata Apoapsis
+      <div class="flex flex-center mb2 mxn1">
+        <div class="px1">
+          <img src="logo.svg" width="64" height="64" alt="Kepler" />
+        </div>
+        <div class="px1">
+          <h1 class="mt0 mb0">Kepler</h1>
+          <small class="gray">v0.0.1 - Crossfield</small>
+        </div>
       </div>
 
-      <ol class="list-reset flex mxn1 mb4">
-        <li>
-          <a class="p1" href="#story">Story</a>
-        </li>
+      <div class="border-bottom">
+        <ol class="list-reset flex mxn1 mb0">
+          <li>
+            <a class="p1 center block" href="#documentation">Getting started</a>
+          </li>
 
-        <li>
-          <a class="p1" href="#documentation">Documentation</a>
-        </li>
-      </ol>
+          <li>
+            <a class="p1 center block" href="#documentation">Documentation</a>
+          </li>
 
-      <h2 id="story">Story</h2>
+          <li>
+            <a class="p1 center block" href="https://github.com/chrislloyd/kepler">Code</a>
+          </li>
 
-      <p><span>Humanity is interstellar. Planets are starting to be colonized
-      with the help of robot companions (“man's best friend”). As humans travel
-      to the boundaries of the universe, they also push the boundaries of
-      artificial intelligence. The game starts at the cusp of the singularity
-      on the planet</span> <em>Kepler 1a</em><span>. You are a robot trying to
-      achieve sentience. Create your own destiny in an unforgiving
-      environment.</span></p>
+          <li>
+            <a class="p1 center block" href="https://github.com/chrislloyd/kepler/releases">Releases</a>
+          </li>
+        </ol>
+      </div>
+    </div>
 
-      <h2 id="documentation">Documentation</h2>
+    <div class="container px2">
+      <p class="h3">
+        <span class="bold">This is a game where you play by writing computer programs.</span>
+        Humanity is interstellar. Planets are starting to be colonized with the help of robot companions (&ldquo;man's best friend&rdquo;). As humans travel to the boundaries of the universe, they also push the boundaries of artificial intelligence. The game starts at the cusp of the singularity on the planet <em>Kepler 1a</em>. You are a robot trying to achieve sentience. Create your own destiny in an unforgiving environment.</p>
+    </div>
 
-      <p><strong>Is there something you're stuck on?</strong> <span>Come and
-      see Chris Lloyd or Dave Newman in the middle of the room.</span></p>
+    <div class="container px2">
+      <h2 class="green">Getting Started</h2>
+      <p class="gray">Coming soon.</p>
 
-      <h4>High level overview</h4>
+      <h2 id="documentation" class="green">Documentation</h2>
 
-      <p><span>There's a central server. It's running on</span>
-      <code>chrislloyd.local:5000</code><span>. The server only speaks
+      <p>There's a central server. It's running on
+      <code>chrislloyd.local:5000</code>. The server only speaks
       websockets. Your bot is going to connect to this server (via.
       websockets). Every 300ms or so, your client will recieve a tick. This
-      data is formatted in JSON.</span></p>
+      data is formatted in JSON.</p>
 
-      <h4>Stuff you get from the server</h4>
-      <pre>
-<code>
-  {
-    "event": "tick",
-    "state": {
-      "tick": "abcd-1234",
-      "entity": "abcd-1234",
-      "entities": [{
-        "id": "abcd-1234",
-        "pos": {"x": 0, "y": 0},
-        ...
-      }]
-    }
-  }
-</code>
-</pre>
+      <a class="block p1 center border blue rounded">
+        ws://kepler.herokuapp.com
+      </a>
 
-      <p><span>Cool! The tick is just a random ID that changes. For simple bots
-      you can probably ignore it. The root entity
-      (</span><code>state/entity</code><span>) is your bot's ID. The</span>
-      <code>entities</code> <span>array is just a collection of other players
-      and things in the game.</span></p>
+      <h3>Events</h3>
+      <p>Once you've connected to the server, you'll start recieving events. All events are serialized using <a href="http://json.org">JSON</a>. All events are an object with a <code>type</code> attribute.</p>
+
+      <div class="border rounded mb3">
+        <div class="p1 border-bottom">
+          <h4 class="mt0">Tick</h4>
+          <p class="h5 mb0">Sent every 300ms, the tick event describes the current state of the world visible to your robot. Your robot can see all other robots in a <span class="italic">20m radius</span> from it's own position.</p>
+        </div>
+        <pre class="p1 mb0 bg-darken-1 not-rounded"><code>{
+  "type": "tick",
+  "tick-id": "abcd-1234",
+  "entity-id": "abcd-1234",
+  "entities": [{
+    "id": "abcd-1234",
+    "pos": {"x": 0, "y": 0},
+    ...
+  }]
+}</code></pre>
+      </div>
+
+      <div class="border rounded mb3">
+        <div class="p1 border-bottom">
+          <h4 class="mt0">Kick</h4>
+          <p class="h5 mb0">Before you are disconnected, you'll recieve an event telling you why you are being kicked from the server.</p>
+        </div>
+        <pre class="p1 mb0 bg-darken-1 not-rounded"><code>{
+  "type": "kick",
+  "msg": "death"
+}</code></pre>
+      </div>
 
       <h4>Commands</h4>
 
@@ -129,11 +160,10 @@
 <code>["MOVE", "up"] ["NAME", "chrislloyd"] ["FLAIR", 255, 255, 255]</code>
 </pre>
 
-      <h2>Release Notes</h2>
+      <h3>The world</h3>
 
-      <h3>0.1.0</h3>
+      <p>There are several special properties of the world that are worth noting.</p>
 
-      <ul></ul>
     </div>
   </div>
 </body>

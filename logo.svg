@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.3 (12072) - http://www.bohemiancoding.com/sketch -->
+    <title>logo</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <radialGradient cx="25.5401611%" cy="75.0015259%" fx="25.5401611%" fy="75.0015259%" r="75.0015259%" id="radialGradient-1">
+            <stop stop-color="#000000" stop-opacity="0.203691123" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0" offset="100%"></stop>
+        </radialGradient>
+        <path id="path-2" d="M32,64 C49.673112,64 64,49.673112 64,32 C64,14.326888 49.673112,0 32,0 C14.326888,0 0,14.326888 0,32 C0,49.673112 14.326888,64 32,64 Z"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <circle id="moon-b" stroke="#FFFFFF" stroke-width="4" fill="#DDDDDD" sketch:type="MSShapeGroup" cx="56" cy="8" r="8"></circle>
+        <g id="planet">
+            <use stroke="#FFFFFF" stroke-width="2" fill="#52CC66" sketch:type="MSShapeGroup" xlink:href="#path-2"></use>
+            <use stroke="none" fill="url(#radialGradient-1)" xlink:href="#path-2"></use>
+        </g>
+        <circle id="moon-a" stroke="#FFFFFF" stroke-width="2" fill="#AAAAAA" sketch:type="MSShapeGroup" cx="16" cy="48" r="16"></circle>
+    </g>
+</svg>
