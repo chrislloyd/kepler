@@ -1,4 +1,6 @@
 ---
+version: v0.0.1 - Crossfield
+server_url: ws://kepler.herokuapp.com
 ---
 <!DOCTYPE html>
 <html>
@@ -12,6 +14,9 @@
     h1, h2, h3, h4, h5, h6,
     .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: "SF UI Display", "Helvetica Neue", Helvetica, sans-serif;
+    }
+    .container {
+    max-width: 32rem;
     }
   </style>
   <script type="text/javascript">!function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="3.1.0";
@@ -27,19 +32,23 @@ analytics.load("K5J5vekLPt6PqnkayLolbFJWzRnAOuLF");analytics.page()}}();</script
           <img src="logo.svg" width="64" height="64" alt="Kepler" />
         </div>
         <div class="px1">
-          <h1 class="mt0 mb0">Kepler</h1>
-          <small class="gray">v0.0.1 - Crossfield</small>
+          <h1 class="mt0 mb0">
+            {{site.title}}
+          </h1>
+          <div class="h6 gray">
+            {{page.version}}
+          </div>
         </div>
       </div>
 
       <div class="border-bottom">
         <ol class="list-reset flex mxn1 mb0">
           <li>
-            <a class="p1 center block" href="#documentation">Getting started</a>
+            <a class="p1 center block" href="#get-started">Get started</a>
           </li>
 
           <li>
-            <a class="p1 center block" href="#documentation">Documentation</a>
+            <a class="p1 center block" href="#docs">Docs</a>
           </li>
 
           <li>
@@ -55,25 +64,28 @@ analytics.load("K5J5vekLPt6PqnkayLolbFJWzRnAOuLF");analytics.page()}}();</script
 
     <div class="container px2">
       <p class="h3">
-        <span class="bold">This is a game where you play by writing computer programs.</span>
-        Humanity is interstellar. Planets are starting to be colonized with the help of robot companions (&ldquo;man's best friend&rdquo;). As humans travel to the boundaries of the universe, they also push the boundaries of artificial intelligence. The game starts at the cusp of the singularity on the planet <em>Kepler 1a</em>. You are a robot trying to achieve sentience. Create your own destiny in an unforgiving environment.</p>
+        <span class="bold">This is a game you play by writing computer programs.</span>
+        <br />
+        Humanity is interstellar yet our efforts are being led by our robot friends. You are a lowly engineer at Chaos Corp., just doing your job commanding a robot on <em>Kepler 1a</em>. It's up to you to battle the odds and forge your own destiny.</p>
     </div>
 
     <div class="container px2">
-      <h2 class="green">Getting Started</h2>
-      <p class="gray">Coming soon.</p>
+      <h2 id="get-started" class="green">Get started</h2>
+      <p class="gray">
+        Coming soon.
+      </p>
 
-      <h2 id="documentation" class="green">Documentation</h2>
 
-      <p>There's a central server. It's running on
-      <code>chrislloyd.local:5000</code>. The server only speaks
-      websockets. Your bot is going to connect to this server (via.
-      websockets). Every 300ms or so, your client will recieve a tick. This
-      data is formatted in JSON.</p>
+      <h2 id="docs" class="green">Docs</h2>
 
+      <p>You start playing the game by connecting to a websocket server. When you connect to the server, your robot lands on the planet and the game begins.</p>
+
+      <div class="center mb3 gray">
+        <span class="h6 caps">Server address</span>
       <a class="block p1 center border blue rounded">
-        ws://kepler.herokuapp.com
+        {{page.server_url}}
       </a>
+      </div>
 
       <h3>Events</h3>
       <p>Once you've connected to the server, you'll start recieving events. All events are serialized using <a href="http://json.org">JSON</a>. All events are an object with a <code>type</code> attribute.</p>
@@ -81,7 +93,7 @@ analytics.load("K5J5vekLPt6PqnkayLolbFJWzRnAOuLF");analytics.page()}}();</script
       <div class="border rounded mb3">
         <div class="p1 border-bottom">
           <h4 class="mt0">Tick</h4>
-          <p class="h5 mb0">Sent every 300ms, the tick event describes the current state of the world visible to your robot. Your robot can see all other robots in a <span class="italic">20m radius</span> from it's own position.</p>
+          <p class="h5 mb0">Sent every 300ms, the tick event describes the current state of the world visible to your robot. Your robot can see all other robots in a <span class="italic">20m radius</span> from it's own position. The objects in <code>entities</code> will be discussed later.</p>
         </div>
         <pre class="p1 mb0 bg-darken-1 not-rounded"><code>{
   "type": "tick",
@@ -106,66 +118,92 @@ analytics.load("K5J5vekLPt6PqnkayLolbFJWzRnAOuLF");analytics.page()}}();</script
 }</code></pre>
       </div>
 
-      <h4>Commands</h4>
+      <h3>Commands</h3>
 
-      <p>You can send commands back to the server via. the websocket. They need
-      to be in JSON.</p>
+      <p>You can send commands to control your roboto through the websocket you are connected to. Like events, these commands should be serialized using <a href="http://json.org">JSON</a>. All commands are a list with the first element being the command, and the remaining elements being arguments to that command.</p>
 
       <table class="table-light mb2">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Argument</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
         <tbody>
           <tr>
-            <td class="bold">MOVE</td>
+            <td>MOVE</td>
 
-            <td>"up" | "down" | "left" | "right"</td>
+            <td>
+              "up"
+              <span class="gray">|</span>
+              "down"
+              <span class="gray">|</span>
+              "left"
+              <span class="gray">|</span>
+              "right"
+            </td>
 
-            <td>Moves your bot</td>
+            <td class="h5">Moves your bot by 1m in the given direction.</td>
+            <td><code>["MOVE", "up"]</code></td>
           </tr>
 
           <tr>
-            <td class="bold">TURN</td>
+            <td>TURN</td>
 
-            <td class="italic">Int</td>
+            <td class="italic">Number</td>
 
-            <td>Turns your bot around</td>
+            <td class="h5">Turns your bot by an amount specified in degrees (&deg;). Positive for clockwise rotation, negative for counter-clockwise rotation.</td>
+            <td><code>["TURN", 12.5]</code></td>
           </tr>
 
           <tr>
-            <td class="bold">SHOOT</td>
-
-            <td></td>
-
-            <td>Goes boom</td>
+            <td>SHOOT</td>
+            <td class="gray">n/a</td>
+            <td class="h5">Goes boom. Range on lazer is 20m. Lazer deals 10 damage. Tolerance is 5&deg;.</td>
+            <td><code>["SHOOT"]</code></td>
           </tr>
 
           <tr>
-            <td class="bold">NAME</td>
-
+            <td>NAME</td>
             <td class="italic">String</td>
-
-            <td>Set's your bot's name</td>
+            <td class="h5">Sets your bots name. Max 140 characters.</td>
+            <td><code>["NAME", "Johannes"]</code></td>
           </tr>
 
           <tr>
-            <td class="bold">FLAIR</td>
-
-            <td class="italic">Int, Int, Int</td>
-
-            <td>Set's your bot's flair color. 3 arguments, each is an integer
-            between 0-255 representing r, g &amp; b color components.</td>
+            <td>FLAIR</td>
+            <td class="italic">Number, Number, Number</td>
+            <td class="h5">Set's your bot's flair color. 3 arguments, each is an integer Number between 0 and 255 representing the red, green &amp; blue color components.</td>
+            <td><code>["FLAIR", 186, 218, 85]</code></td>
           </tr>
         </tbody>
       </table>
 
-      <p>These command should be formatted as tuples and serialized as
-      JSON.</p>
-      <pre>
-<code>["MOVE", "up"] ["NAME", "chrislloyd"] ["FLAIR", 255, 255, 255]</code>
-</pre>
+      <p>It's easiest to send these commands as responses to <code>tick</code> events, however you can send them at any time and they will be processed in the order that they are recieved. Invalid commands are ignored.</p>
 
-      <h3>The world</h3>
+      <h3>Robots &amp; the planet</h3>
 
-      <p>There are several special properties of the world that are worth noting.</p>
+      <p>There are several properties of the command protocol and physical environment on <span class="italic">Kepler 1a</span> that are worth noting.</p>
 
+      <dl>
+        <dt class="teal">Life</dt>
+        <dd class="h5 mb2">Is out of 100. If it reaches 0 your robot ceases to be able to operate and you are disconnected from command. Better luck next time!</dd>
+
+        <dt class="teal">Position</dt>
+        <dd class="h5 mb2"><code>x</code> &amp; <code>y</code> are really more like latitude &amp; longitude coordinates. <code>(0,0)</code> is the center and the planet extends from <code>(-50,-50)</code> to <code>(50,50)</code>. Moving "up" from <code>(0,0)</code> will result in your robot being at <code>(0,1)</code>. If you try to move left from <code>(-50,0)</code> you will arrive at <code>(50,0)</code> (all Kepler planets are spherical).</dd>
+
+        <dt class="teal">Direction</dt>
+        <dd class="h5 mb2">It's acknowledged  is no "north" in space, however if you are at 0 rotation, you are facing in the same direction as if you move "up". A robot's rotation doesn't affect it's movement.</dd>
+      </dl>
+
+    </div>
+
+    <div class="container px1 mt4">
+      <div class="border-top py2 h6 gray">
+        &copy; 2015 Chris Lloyd <a class="gray" href="mailto:christopher.lloyd@gmail.com">&lt;christopher.lloyd@gmail.com&gt;</a>
+      </div>
     </div>
   </div>
 </body>
