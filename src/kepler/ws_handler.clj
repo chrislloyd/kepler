@@ -51,6 +51,15 @@
                                    :entity entity})
                         (close! ws-channel)))))))))
 
-(defn new-ws-handler [{:keys [dispatcher] :as opts}]
-  (wrap-websocket-handler (partial handler dispatcher) opts))
+(defn- wrap-docs-redirect-handler [handler {:keys [docs-url]}]
+  (fn [req]
+    (if-not (:websocket? req)
+      {:status 303
+       :headers {"Location" docs-url}}
+      (handler req))))
 
+(defn new-ws-handler [{:keys [dispatcher] :as opts}]
+  (-> handler
+      (partial dispatcher)
+      (wrap-websocket-handler opts)
+      (wrap-docs-redirect-handler opts)))

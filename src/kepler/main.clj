@@ -9,11 +9,12 @@
             [yoyo :refer [set-system-fn! start! ylet]]))
 
 (defn- make-system [latch]
-  (ylet [:let [port (Integer/parseInt (System/getenv "PORT"))]
+  (ylet [:let [port (Integer/parseInt (or (System/getenv "PORT") "5000"))]
          engine (with-engine game-system)
          :let [dispatcher (partial dispatch-action engine)
                ws-handler (new-ws-handler {:dispatcher dispatcher
-                                           :format :json})]
+                                           :format :json
+                                           :docs-url "https://chrislloyd.github.io/kepler"})]
          clock  (with-clock {:period 300
                              :dispatcher dispatcher})
          wss (with-server {:handler ws-handler
