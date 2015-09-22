@@ -6,10 +6,7 @@
              [util :refer [async-pmap]]]))
 
 (defn- components-for-serialization [entity viewer]
-  (let [components #{:pos :life :rot :name :score :flair}]
-    (if (= entity viewer)
-      (union components #{:inventory :energy})
-      components)))
+  #{:pos :life :rot :name :flair})
 
 (defn- distance [{x1 :x y1 :y} {x2 :x y2 :y}]
   (Math/sqrt (+ (Math/pow (- x2 x1) 2)

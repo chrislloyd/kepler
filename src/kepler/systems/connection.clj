@@ -1,5 +1,5 @@
 (ns kepler.systems.connection
-  (:require [kepler component 
+  (:require [kepler component
              [entity :refer [new-entity]]
              [pt :refer [pt]]]
             [kepler.component
@@ -8,9 +8,7 @@
              [name :refer [name-component]]
              [position :refer [position-component]]
              [remote-control :refer [remote-control-component]]
-             [rotation :refer [rotation-component]]
-             [score :refer [score-component]]
-             [shooting :refer [shooting-component]]]))
+             [rotation :refer [rotation-component]]]))
 
 (defn entry-pt []
   (pt (+ -50 (int (Math/floor (rand 100))))
@@ -19,22 +17,12 @@
 (defn- add-bot [state {:keys [entity chan]}]
   (let [lazer-entity (new-entity)]
     (-> state
-        ;; (conj (item-component "lazer" lazer-entity))
-
         (conj (remote-control-component chan entity))
-        (conj (score-component 0 entity))
         (conj (flair-component entity))
         (conj (name-component nil entity))
-        (conj (shooting-component entity))
         (conj (life-component 100 entity))
-        ;; (conj (battery-component 100 entity))
         (conj (position-component (entry-pt) entity))
-        (conj (rotation-component 0.0 entity))
-        ;; (conj (inventory-component #{lazer-entity} entity))
-        )))
-
-;;; use-drill :: State -> Item -> Entity -> State
-;;; (defn use-drill [state])
+        (conj (rotation-component 0.0 entity)))))
 
 (defn- remove-bot [state {:keys [entity]}]
   (filter (fn [component]

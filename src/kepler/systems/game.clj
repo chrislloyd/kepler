@@ -1,6 +1,5 @@
 (ns kepler.systems.game
-  (:require [kepler.component :refer [update-component-val]]
-            [kepler.systems
+  (:require [kepler.systems
              [connection :refer [connection-system]]
              [coordinate :refer [coordinate-system]]
              [dead-bot-kicker :refer [dead-bot-kicker-system]]
@@ -10,7 +9,6 @@
              [locomotion :refer [locomotion-system]]
              [name :refer [name-system]]
              [repair :refer [repair-system]]
-             [score :refer [score-system]]
              [state-broadcaster :refer [state-broadcaster-system]]]))
 
 (def DefaultState '())
@@ -18,7 +16,7 @@
 (defn game-system
   [state action]
   (-> (or state DefaultState)
-      
+
       ;; remote connections
       (connection-system action)
 
@@ -30,15 +28,11 @@
       (flair-system action)
 
       ;; environment
-      ;; (cosmic-ray-system action)
       (coordinate-system action)
 
       ;; death
       (dead-bot-kicker-system action)
       (decomposition-system action)
-      
-      ;; scoring
-      (score-system action)
 
       ;; comms
       (state-broadcaster-system action)))
