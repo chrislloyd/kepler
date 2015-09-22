@@ -20,14 +20,13 @@
            [{:entity "victim" :type :life :val 90}]))))
 
 (deftest use-item-test
-  (let [item (new-weapon {:energy 100
-                          :damage 100
-                          :spread 360
+  (let [item (new-weapon {:damage 50
+                          :spread 5
                           :range 100})
-        state [{:entity "attacker" :type :pos :val {:x 0 :y 0}}
-               {:entity "attacker" :type :rotation :val 45}
-               {:entity "victim" :type :pos :val {:x 10 :y 10}}]]
+        state '({:entity "attacker" :type :pos :val {:x 0 :y 0}}
+                {:entity "attacker" :type :rot :val 45}
+                {:entity "victim" :type :pos :val {:x 10 :y 10}})]
     (is (= (use-item item "attacker" (conj state
                                            {:entity "victim" :type :life :val 100}))
            (conj state
-                 {:entity "victim" :type :life :val 0})))))
+                 {:entity "victim" :type :life :val 50})))))

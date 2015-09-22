@@ -6,13 +6,13 @@
   (testing "any action"
     (is (= (coordinate-system '() {})
            '())))
-  
+
   (testing "tick action"
-    (let [state '([1 :pos {:x 0 :y 0}])
+    (let [state '()
           action {:type :tick}]
       (is (= (coordinate-system state action) state)))
-    
-    (let [state '([1 :pos {:x 1000 :y 1000}])
+
+    (let [state '({:entity 1 :type :pos :val {:x 1000 :y 1000}})
           action {:type :tick}]
       (is (= (coordinate-system state action)
-             '([1 :pos {:x 0 :y 0}]))))))
+             '({:entity 1 :type :pos :val {:x 0 :y 0}}))))))

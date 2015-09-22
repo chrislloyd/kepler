@@ -19,5 +19,7 @@
                     (conj {:entity 2 :type :life :val 100}))
           action {:type :tick}
           subject (dead-bot-kicker-system state action)]
-      (is (= subject state))
+      (is (= subject
+             (-> []
+                 (conj {:entity 2 :type :life :val 100}))))
       (is (= (<!! c) {:type :kick :msg "dead"})))))

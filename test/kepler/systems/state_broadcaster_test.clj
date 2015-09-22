@@ -15,8 +15,8 @@
                (state-broadcaster-system state action)
                (<!! c))
              {:type :tick
-              :payload {:tick "asdf-1234"
-                        :me {:entity 1
-                             :life 100
-                             :pos {:x 0 :y 0}}
-                        :sensors []}})))))
+              :state {:tick "asdf-1234"
+                      :me 1
+                      :entities '({:id 1
+                                   :life 100
+                                   :pos {:x 0 :y 0}})}})))))

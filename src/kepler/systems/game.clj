@@ -5,7 +5,7 @@
              [dead-bot-kicker :refer [dead-bot-kicker-system]]
              [decomposition :refer [decomposition-system]]
              [flair :refer [flair-system]]
-             [inventory :refer [inventory-system]]
+             [lazer :refer [lazer-system]]
              [locomotion :refer [locomotion-system]]
              [name :refer [name-system]]
              [repair :refer [repair-system]]
@@ -22,7 +22,7 @@
 
       ;; actions
       (locomotion-system action)
-      (inventory-system action)
+      (lazer-system action)
       (repair-system action)
       (name-system action)
       (flair-system action)

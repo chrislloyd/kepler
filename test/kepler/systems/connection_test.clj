@@ -13,4 +13,4 @@
     (is (= (connection-system [{:entity 1 :type :life :val 100}
                                {:entity 1 :type :uplink :val "chan"}]
                               remove-bot-action)
-           [{:entity 1 :type :life :val 100}]))))
+           []))))
