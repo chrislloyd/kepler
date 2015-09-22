@@ -1,4 +1,4 @@
-(defproject kepler "0.1.0-SNAPSHOT"
+(defproject kepler "0.0.1"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[compojure "1.3.4"]
