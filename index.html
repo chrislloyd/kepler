@@ -1,90 +1,48 @@
 ---
-version: v0.0.1 - Crossfield
+version: v0.0.1
 server_url: ws://kepler.herokuapp.com
 ---
 <!DOCTYPE html>
 <html>
 <head>
   <title>{{site.title}}</title>
-  <link href="http://d2v52k3cl9vedd.cloudfront.net/basscss/7.0.4/basscss.min.css" rel="stylesheet">
-  <style>
-    body {
-    font-family: "SF UI Text", "Helvetica Neue", Helvetica, sans-serif;
-    }
-    h1, h2, h3, h4, h5, h6,
-    .h1, .h2, .h3, .h4, .h5, .h6 {
-    font-family: "SF UI Display", "Helvetica Neue", Helvetica, sans-serif;
-    }
-    .container {
-    max-width: 32rem;
-    }
-  </style>
+  <link href="{{site.baseurl}}/kepler.css" rel="stylesheet">
   <script type="text/javascript">!function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="3.1.0";
 analytics.load("K5J5vekLPt6PqnkayLolbFJWzRnAOuLF");analytics.page()}}();</script>
 </head>
 
 <body>
   <div id="root">
-    <div class="py3 container px2">
+    <div class="white bg-black h4">
+      <div class="container px2">
+        <div class="mxn2 flex flex-justify">
+          <a class="block p2 white" href="{{site.baseurl}}/">Kepler</a>
 
-      <div class="flex flex-center mb2 mxn1">
-        <div class="px1">
-          <img src="logo.svg" width="64" height="64" alt="Kepler" class="block" />
+          <a class="block p2 gray" href="#">Docs</a>
+
+          <a class="block p2 gray" href="https://github.com/chrislloyd/kepler">Code</a>
+
+          <a class="block p2 gray" href="https://github.com/chrislloyd/kepler/releases">{{page.version}}</a>
         </div>
-        <div class="px1">
-          <h1 class="mt0 mb0">
-            {{site.title}}
-          </h1>
-          <div class="h6 gray">
-            {{page.version}}
-          </div>
-        </div>
-      </div>
-
-      <div class="border-bottom">
-        <ol class="list-reset flex mxn1 mb0">
-          <li>
-            <a class="p1 center block" href="#get-started">Get started</a>
-          </li>
-
-          <li>
-            <a class="p1 center block" href="#docs">Docs</a>
-          </li>
-
-          <li>
-            <a class="p1 center block" href="https://github.com/chrislloyd/kepler">Code</a>
-          </li>
-
-          <li>
-            <a class="p1 center block" href="https://github.com/chrislloyd/kepler/releases">Releases</a>
-          </li>
-        </ol>
       </div>
     </div>
 
-    <div class="container px2">
-      <p class="h3">
-        <span class="bold">This is a game you play by writing computer programs.</span>
-        <br />
-        Humanity is interstellar yet our efforts are being led by our robot friends. You are a lowly engineer at Chaos Corp., just doing your job commanding a robot on <em>Kepler 1a</em>. It's up to you to battle the odds and forge your own destiny.</p>
-    </div>
-
-    <div class="container px2">
-      <h2 id="get-started" class="green">Get started</h2>
-      <p class="gray">
-        Coming soon.
+    <div class="container px2 py3">
+      <h2>A game for machines.</h2>
+      <p class="h3 gray">
+        Humanity is interstellar with robots leading expeditions to new planets. Kepler is about those robots surviving and thriving in unforgiving environments.
       </p>
+    </div>
 
-
-      <h2 id="docs" class="green">Docs</h2>
-
+    <div class="container px2">
+      <h3>Start here</h3>
       <p>You start playing the game by connecting to a websocket server. When you connect to the server, your robot lands on the planet and the game begins.</p>
 
-      <div class="center mb3 gray">
-        <span class="h6 caps">Server address</span>
-      <a class="block p1 center border blue rounded">
-        {{page.server_url}}
-      </a>
+      <div class="mb3 gray">
+
+        <a class="">
+          {{page.server_url}}
+        </a>
       </div>
 
       <h3>Events</h3>
@@ -110,8 +68,10 @@ analytics.load("K5J5vekLPt6PqnkayLolbFJWzRnAOuLF");analytics.page()}}();</script
       <div class="border rounded mb3">
         <div class="p1 border-bottom">
           <h4 class="mt0">Kick</h4>
+
           <p class="h5 mb0">Before you are disconnected, you'll recieve an event telling you why you are being kicked from the server.</p>
         </div>
+
         <pre class="p1 mb0 bg-darken-1 not-rounded"><code>{
   "type": "kick",
   "msg": "death"
@@ -197,7 +157,6 @@ analytics.load("K5J5vekLPt6PqnkayLolbFJWzRnAOuLF");analytics.page()}}();</script
         <dt class="teal">Direction</dt>
         <dd class="h5 mb2">It's acknowledged  is no "north" in space, however if you are at 0 rotation, you are facing in the same direction as if you move "up". A robot's rotation doesn't affect it's movement.</dd>
       </dl>
-
     </div>
 
     <div class="container px1 mt4">

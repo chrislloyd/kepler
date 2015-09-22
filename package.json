@@ -1,0 +1,12 @@
+{
+  "name": "kepler",
+  "scripts": {
+    "build": "./node_modules/cssnext/dist/bin.js css/main.css > kepler.css"
+  },
+  "dependencies": {
+    "basscss": "^7.0.4"
+  },
+  "devDependencies": {
+    "cssnext": "^1.8.4"
+  }
+}

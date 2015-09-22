@@ -1,0 +1,15 @@
+@import 'basscss';
+
+:root {
+  --aqua: #00BFE6;
+  --blue: #3399FF;
+  --navy: #1A2033;
+  --red: #F23D4C;
+
+
+  --font-family: 'SF UI Text', 'Helvetica Neue', Helvetica, sans-serif;
+  --heading-font-family: 'SF UI Display', 'Helvetica Neue', Helvetica, sans-serif;
+
+  --bold-font-weight: 500;
+  --heading-font-weight: 500;
+}
