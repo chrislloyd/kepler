@@ -16,12 +16,6 @@
 (def NameCommand
   [(s/one (s/eq "NAME") "type") (s/both s/Str (s/pred #(<= (count %) 140)))])
 
-(def FlairCommand
-  [(s/one (s/eq "FLAIR") "type")
-   (s/one s/Int "r")
-   (s/one s/Int "g")
-   (s/one s/Int "b")])
-
 
 (s/defschema Command
   "A schema for commands that players can send to their bots"
@@ -30,8 +24,7 @@
    #(= (first %) "MOVE") MoveCommand
    #(= (first %) "TURN") TurnCommand
    #(= (first %) "SHOOT") ShootCommand
-   #(= (first %) "NAME") NameCommand
-   #(= (first %) "FLAIR") FlairCommand))
+   #(= (first %) "NAME") NameCommand))
 
 (defn check-command
   "Checks an command"

@@ -40,10 +40,3 @@
 (defn tick-action [id]
   {:type :tick
    :tick id})
-
-(defn flair-action [entity r g b]
-  {:type :flair
-   :entity entity
-   :r r
-   :g g
-   :b b})

@@ -6,7 +6,6 @@
             [cheshire.core :as json]
             [kepler.actions :refer [bad-cmd-action]]
             [ring.util.response :refer [response]]
-            [kepler.actions :refer [flair-action]]
             [kepler
              [actions :refer [move-action name-action shoot-action turn-action]]
              [command :refer [check-command]]
@@ -20,11 +19,7 @@
         "MOVE" (move-action entity arg)
         "TURN" (turn-action entity arg)
         "SHOOT" (shoot-action entity)
-        "NAME" (name-action entity arg)
-        "FLAIR" (flair-action entity
-                              (nth cmd 1)
-                              (nth cmd 2)
-                              (nth cmd 3))))
+        "NAME" (name-action entity arg)))
     (bad-cmd-action entity cmd)))
 
 (defn- handler [dispatch {:keys [ws-channel] :as req}]

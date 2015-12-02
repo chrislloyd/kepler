@@ -4,7 +4,6 @@
              [coordinate :refer [coordinate-system]]
              [dead-bot-kicker :refer [dead-bot-kicker-system]]
              [decomposition :refer [decomposition-system]]
-             [flair :refer [flair-system]]
              [lazer :refer [lazer-system]]
              [locomotion :refer [locomotion-system]]
              [name :refer [name-system]]
@@ -25,7 +24,6 @@
       (lazer-system action)
       (repair-system action)
       (name-system action)
-      (flair-system action)
 
       ;; environment
       (coordinate-system action)

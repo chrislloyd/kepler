@@ -9,6 +9,4 @@
   (is (validate-command ["MOVE", "right"]))
   (is (validate-command ["TURN", 360]))
   (is (validate-command ["SHOOT"]))
-  (is (validate-command ["NAME", "chrislloyd"]))
-  (is (validate-command ["FLAIR", 255, 255, 255])))
-
+  (is (validate-command ["NAME", "chrislloyd"])))

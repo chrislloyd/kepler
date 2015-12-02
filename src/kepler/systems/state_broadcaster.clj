@@ -6,7 +6,7 @@
              [util :refer [async-pmap]]]))
 
 (defn- components-for-serialization [entity viewer]
-  #{:pos :life :rot :name :flair})
+  #{:pos :life :rot :name})
 
 (defn- distance [{x1 :x y1 :y} {x2 :x y2 :y}]
   (Math/sqrt (+ (Math/pow (- x2 x1) 2)

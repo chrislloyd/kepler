@@ -3,7 +3,6 @@
              [entity :refer [new-entity]]
              [pt :refer [pt]]]
             [kepler.component
-             [flair :refer [flair-component]]
              [life :refer [life-component]]
              [name :refer [name-component]]
              [position :refer [position-component]]
@@ -18,7 +17,6 @@
   (let [lazer-entity (new-entity)]
     (-> state
         (conj (remote-control-component chan entity))
-        (conj (flair-component entity))
         (conj (name-component nil entity))
         (conj (life-component 100 entity))
         (conj (position-component (entry-pt) entity))
