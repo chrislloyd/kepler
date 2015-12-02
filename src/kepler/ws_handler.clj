@@ -2,49 +2,45 @@
   (:require [chord.http-kit :refer [wrap-websocket-handler]]
             [clojure.core.async :refer [>!! alt! chan close! go]]
             [compojure.core :refer [routes GET OPTIONS]]
-            [kepler.actions :refer [add-bot-action]]
             [cheshire.core :as json]
-            [kepler.actions :refer [bad-cmd-action]]
             [ring.util.response :refer [response]]
             [kepler
-             [actions :refer [move-action name-action shoot-action turn-action]]
+             [actions :refer [add-bot remove-bot invalid-cmd move rename shoot turn]]
              [command :refer [check-command]]
-             [entity :refer [new-entity]]]
-            [kepler.actions :refer [remove-bot-action]]))
+             [entity :refer [new-entity]]]))
 
-(defn- cmd-action [entity cmd]
+(defn- cmd [entity cmd]
   (if (nil? (check-command cmd))
     (let [[name arg] cmd]
       (case name
-        "MOVE" (move-action entity arg)
-        "TURN" (turn-action entity arg)
-        "SHOOT" (shoot-action entity)
-        "NAME" (name-action entity arg)))
-    (bad-cmd-action entity cmd)))
+        "MOVE" (move entity arg)
+        "TURN" (turn entity arg)
+        "SHOOT" (shoot entity)
+        "NAME" (name entity arg)))
+    (invalid-cmd entity cmd)))
 
 (defn- handler [dispatch {:keys [ws-channel] :as req}]
   (let [entity (new-entity)
         uplink (chan)]
     (go
-      (dispatch (add-bot-action entity uplink))
+      (dispatch (add-bot entity uplink))
       (loop []
         (alt!
           ws-channel ([message]
                       (if message
                         (do
-                          (dispatch (cmd-action entity (:message message)))
+                          (dispatch (cmd entity (:message message)))
                           (recur))
-                        (dispatch (remove-bot-action entity))))
+                        (dispatch (remove-bot entity))))
           uplink ([event]
-              (case (:type event)
-                :tick (do
-                        (>!! ws-channel event )
-                        (recur))
-                :kick (do
-                        (>!! ws-channel event)
-                        (dispatch {:type :remove-bot
-                                   :entity entity})
-                        (close! ws-channel)))))))))
+                  (case (:type event)
+                    :tick (do
+                            (>!! ws-channel event)
+                            (recur))
+                    :kick (do
+                            (>!! ws-channel event)
+                            (dispatch (remove-bot entity))
+                            (close! ws-channel)))))))))
 
 (defn- wrap-docs-redirect-handler [handler {:keys [docs-url]}]
   (fn [req]

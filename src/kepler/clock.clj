@@ -1,5 +1,6 @@
 (ns kepler.clock
-  (:require [clojure.core.async :refer [<!! go-loop timeout]]))
+  (:require [clojure.core.async :refer [<!! go-loop timeout]]
+            [kepler.actions :refer [tick]]))
 
 (defrecord Clock [period
                   dispatcher
@@ -8,15 +9,14 @@
 (defn new-clock [{:keys [period dispatcher]}]
   (Clock. period dispatcher (atom false)))
 
-(defn- tick [clock]
-  ((:dispatcher clock) {:type :tick
-                        :tick (str (java.util.UUID/randomUUID))}))
+(defn- dispatch-tick [clock]
+  ((:dispatcher clock) (tick)))
 
 (defn start-clock [clock]
   (do
     (swap! (:running? clock) (constantly true))
     (go-loop [clock clock]
-        (when (and @(:running? clock) (tick clock))
+        (when (and @(:running? clock) (dispatch-tick clock))
           (<!! (timeout (:period clock)))
           (recur clock)))))
 

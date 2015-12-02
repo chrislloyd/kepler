@@ -1,42 +1,43 @@
 (ns kepler.actions)
 
-(defn add-bot-action [entity chan]
-  {:type :add-bot
-   :entity entity
+(defmacro defaction
+  [name args body]
+  `(defn ~name ~args (assoc ~body :type ~(keyword name))))
+
+; --
+
+(defaction tick []
+  {:tick (java.util.UUID/randomUUID)})
+
+; --
+
+(defaction add-bot [entity chan]
+  {:entity entity
    :chan chan})
 
-(defn remove-bot-action [entity]
-  {:type :remove-bot
-   :entity entity})
+(defaction remove-bot [entity]
+  {:entity entity})
 
-(defn repair-action [entity]
-  {:type :repair
-   :entity entity})
-
-(defn move-action [entity dir]
-  {:type :move
-   :entity entity
-   :dir dir})
-
-(defn turn-action [entity dr]
-  {:type :turn
-   :entity entity
-   :dr dr})
-
-(defn shoot-action [entity]
-  {:type :shoot
-   :entity entity})
-
-(defn bad-cmd-action [entity cmd]
-  {:type :bad-cmd
-   :entity entity
+(defaction invalid-cmd [entity cmd]
+  {:entity entity
    :cmd cmd})
 
-(defn name-action [entity new-name]
-  {:type :name
-   :entity entity
-   :name new-name})
+; --
 
-(defn tick-action [id]
-  {:type :tick
-   :tick id})
+(defaction repair [entity]
+  {:entity entity})
+
+(defaction move [entity dir]
+  {:entity entity
+   :dir dir})
+
+(defaction turn [entity dr]
+  {:entity entity
+   :dr dr})
+
+(defaction shoot [entity]
+  {:entity entity})
+
+(defaction rename [entity new-name]
+  {:entity entity
+   :name new-name})
