@@ -1,6 +1,10 @@
 (ns kepler.systems.repair
-  (:require [kepler.component :refer [update-component-val]]
-            [kepler.component.life :refer [heal]]))
+  (:require [kepler.component :refer [update-component-val]]))
+
+(def MAX_LIFE 100)
+
+(defn- heal [health life]
+  (min (+ life health) MAX_LIFE))
 
 (defn repair-system [state action]
   (if (= (:type action) :repair)

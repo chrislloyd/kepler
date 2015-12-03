@@ -7,12 +7,17 @@
 
   [1] http://arxiv.org/ftp/arxiv/papers/1004/1004.1091.pdf"
   (:require [kepler.component :refer [update-component-val]]
-            [kepler.component.position :refer [wrap]]))
+            [kepler.components :refer [position]]
+            [kepler.pt :refer [pt]]))
 
 (def lim 50)
 
+(defn wrap [lim {:keys [x y]}]
+  (pt (- (mod (+ x lim) (* lim 2)) lim)
+      (- (mod (+ y lim) (* lim 2)) lim)))
+
 (defn- wrap-position-component [component]
-  (if (= (:type component) :pos)
+  (if (= (:type component) position)
     (update-component-val (partial wrap lim) component)
     component))
 

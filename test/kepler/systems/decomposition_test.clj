@@ -1,7 +1,9 @@
 (ns kepler.systems.decomposition-test
   (:require [clojure.test :refer :all]
-            [kepler.systems.decomposition :refer :all]
-            [kepler.actions :refer [tick]]))
+            [kepler
+             [actions :refer [tick]]
+             [components :refer [health]]]
+            [kepler.systems.decomposition :refer :all]))
 
 (deftest decomposition-system-test
   (testing "tick action"
@@ -9,10 +11,9 @@
           action (tick)]
       (is (= (decomposition-system state action)
              state))
-      
 
-      (let [state [{:entity 1 :type :life :val 0}
-                   {:entity 1 :type :foo :val "foo"}
-                   {:entity 2 :type :life :val 1}]]
+
+      (let [state [{:entity 1 :type health :val 0}
+                   {:entity 2 :type health :val 1}]]
         (is (= (decomposition-system state action)
-               [{:entity 2 :type :life :val 1}]))))))
+               [{:entity 2 :type health :val 1}]))))))

@@ -1,5 +1,5 @@
 (ns kepler.systems.decomposition
-  (:require [kepler.component.life :refer [is-dead?]]))
+  (:require [kepler.components :refer [health]]))
 
 (defn decomposition-system [state action]
   (if (= (:type action) :tick)
@@ -7,8 +7,8 @@
                              (filter
                               (fn [{:keys [type val]}]
                                 (and
-                                 (= type :life)
-                                 (is-dead? val))))
+                                 (= type health)
+                                 (<= val 0))))
                              (map :entity)
                              (set))]
       (filter (fn [{:keys [entity]}]

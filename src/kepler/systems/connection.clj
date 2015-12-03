@@ -1,13 +1,8 @@
 (ns kepler.systems.connection
   (:require [kepler component
+             [components :refer [health name position remote-control rotation]]
              [entity :refer [new-entity]]
-             [pt :refer [pt]]]
-            [kepler.component
-             [life :refer [life-component]]
-             [name :refer [name-component]]
-             [position :refer [position-component]]
-             [remote-control :refer [remote-control-component]]
-             [rotation :refer [rotation-component]]]))
+             [pt :refer [pt]]]))
 
 (defn entry-pt []
   (pt (+ -50 (int (Math/floor (rand 100))))
@@ -16,11 +11,11 @@
 (defn- add-bot [state {:keys [entity chan]}]
   (let [lazer-entity (new-entity)]
     (-> state
-        (conj (remote-control-component chan entity))
-        (conj (name-component nil entity))
-        (conj (life-component 100 entity))
-        (conj (position-component (entry-pt) entity))
-        (conj (rotation-component 0.0 entity)))))
+        (conj {:entity entity :type remote-control :value chan})
+        (conj {:entity entity :type name :value nil})
+        (conj {:entity entity :type health :value 100})
+        (conj {:entity entity :type position :value (entry-pt)})
+        (conj {:entity entity :type rotation :value 0.0}))))
 
 (defn- remove-bot [state {:keys [entity]}]
   (filter (fn [component]

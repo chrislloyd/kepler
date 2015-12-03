@@ -1,7 +1,23 @@
 (ns kepler.systems.locomotion
-  (:require [kepler.component.position :refer [move-down move-left move-right move-up]]
-            [kepler.component :refer [update-component-val]]
-            [kepler.component.rotation :refer [turn]]))
+  (:require [kepler
+             [component :refer [update-component-val]]
+             [components :refer [position rotation]]
+             [pt :refer [pt]]]))
+
+(defn- move-up [{:keys [x y]}]
+  (pt x (+ y 1)))
+
+(defn- move-down [{:keys [x y]}]
+  (pt x (- y 1)))
+
+(defn- move-left [{:keys [x y]}]
+  (pt (- x 1) y))
+
+(defn- move-right [{:keys [x y]}]
+  (pt (+ x 1) y))
+
+(defn- turn [dr r]
+  (mod (+ r dr) 360))
 
 (defn- move-position [dir c]
   (let [fn (case dir
@@ -13,14 +29,14 @@
 
 (defn- move-entity [state entity dir]
   (map (fn [c]
-         (if (and (= (:entity c) entity) (= (:type c) :pos))
+         (if (and (= (:entity c) entity) (= (:type c) position))
            (move-position dir c)
            c))
        state))
 
 (defn- turn-entity [state entity dr]
   (map (fn [c]
-         (if (and (= (:entity c) entity) (= (:type c) :rot))
+         (if (and (= (:entity c) entity) (= (:type c) rotation))
            (update-component-val (partial turn dr) c)
            c))
        state))

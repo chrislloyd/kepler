@@ -2,13 +2,19 @@
   (:require [kepler.component :refer [get-component]]
             [kepler.component :refer [update-component-val]]
             [kepler.component :refer [by-component]]
-            [kepler.component.life :refer [hurt]]
             [kepler.pt :refer [distance]]
-            [kepler.pt :refer [angle]]))
+            [kepler.pt :refer [angle]]
+            [kepler.components :refer [health]]
+            [kepler.components :refer [position]]
+            [kepler.components :refer [rotation]]
+            [kepler.components :refer [position]]))
 
 (def DAMAGE 10)
 (def SPREAD 5)
 (def RANGE 20)
+
+(defn- hurt [damage life]
+  (- life damage))
 
 (defn- pt-in-range? [attacker-pt attacker-dir target-pt]
   (and (<= (Math/abs (- (angle attacker-pt target-pt) attacker-dir))
@@ -17,13 +23,13 @@
            RANGE)))
 
 (defn- find-victims [entity state]
-  (let [pos-component (get-component state entity :pos)
-        dir-component (get-component state entity :rot)]
+  (let [pos-component (get-component state entity position)
+        dir-component (get-component state entity rotation)]
     (if (and pos-component dir-component)
       (let [pos (:val pos-component)
             dir (:val dir-component)]
         (set (eduction (comp (filter #(not (= (:entity %) entity)))
-                             (by-component :pos)
+                             (by-component position)
                              (filter (fn [component]
                                        (pt-in-range? pos
                                                      dir
@@ -34,7 +40,7 @@
 (defn- deal-damage-to-victims [victims state]
   (map (fn [component]
          (if (and (contains? victims (:entity component))
-                  (= (:type component) :life))
+                  (= (:type component) health))
            (update-component-val (partial hurt DAMAGE) component)
            component))
        state))
